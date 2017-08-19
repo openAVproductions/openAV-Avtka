@@ -6,32 +6,43 @@
 #include <stdint.h>
 
 /* forward declarations */
-struct avtka_ui_t;
+struct avtka_t;
 struct avtka_item_t;
 
-struct avtka_ui_opts_t {
+struct avtka_opts_t {
 	uint32_t flags;
 	uint8_t padding[63];
 };
 
-/* Instantiate a new window */
-struct avtka_ui_t *avtka_ui_create(const char *window_name,
-				   uint32_t width, uint32_t height,
-				   struct avtka_ui_opts_t *opts);
+enum AVTKA_DRAW_IDS {
+	AVTKA_DRAW_NONE   = 0,
+	AVTKA_DRAW_DIAL   = 1,
+	AVTKA_DRAW_SLIDER = 2,
+};
 
-/* Set visibility of the item */
-void avtka_item_visible_set(struct avtka_item_t *item, uint32_t visible);
+struct avtka_item_opts_t {
+	uint16_t x, y, w, h;
+	uint8_t draw;
+	uint8_t padding[23];
+};
+
+/* Instantiate a new window */
+struct avtka_t *avtka_create(const char *window_name,
+			     uint32_t width, uint32_t height,
+			     struct avtka_opts_t *opts);
 
 /* Quit and cleanup a ui */
-int32_t avtka_ui_destroy(struct avtka_ui_t *ui);
+int32_t avtka_destroy(struct avtka_t *a);
 
-/* Create a new item */
-struct avtka_item_t *avtka_item_create();
-int32_t avtka_item_destroy(struct avtka_item_t *);
+/* Set visibility of the item */
+void avtka_item_visible_set(struct avtka_t *a,
+			    uint32_t item,
+			    uint32_t visible);
 
-/* Add a widget to a new container */
-int32_t avtka_item_reparent(struct avtka_item_t *new_parent,
-			    struct avtka_item_t *old_parent);
+/* Create/destroy an item */
+uint32_t avtka_item_create(struct avtka_t *a);
+int32_t avtka_item_destroy(struct avtka_t *a, uint32_t item_id);
+
 
 
 #endif /* AVTKA_H */

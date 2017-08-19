@@ -7,12 +7,14 @@
 
 int main()
 {
-	struct avtka_ui_t *ui = avtka_ui_create("name", 360, 120, NULL);
+	struct avtka_t *a = avtka_create("AVTKA v0.1", 360, 120, NULL);
 
-	avtka_item_visible_set((struct avtka_item_t *)ui, 1);
+	//uint32_t button1 = avtka_item_create(a, "button1", 
+
+	avtka_item_visible_set(a, 0, 1);
 
 	sleep(1);
 
-	avtka_ui_destroy(ui);
+	avtka_destroy(a);
 	return 0;
 }

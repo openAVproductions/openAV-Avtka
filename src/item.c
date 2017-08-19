@@ -4,19 +4,20 @@
 
 #include "avtka.h"
 
-struct avtka_item_t *
-avtka_item_create()
+uint32_t
+avtka_item_create(struct avtka_t *ui)
 {
 	return 0;
 }
 
-int32_t avtka_item_destroy(struct avtka_item_t *item)
+int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)
 {
-	free(item);
+	//free(item);
 	return 0;
 }
 
-void avtka_item_visible_set(struct avtka_item_t *item,
+void avtka_item_visible_set(struct avtka_t *a,
+			    uint32_t item,
 			    uint32_t visible)
 {
 	//item->visible = visible;

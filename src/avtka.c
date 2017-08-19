@@ -9,7 +9,7 @@ struct avtka_item_t {
 	/* tailq for sub items */
 };
 
-struct avtka_ui_t {
+struct avtka_t {
 	/* a ui pointer can be treated as an item */
 	struct avtka_item_t item;
 
@@ -17,15 +17,11 @@ struct avtka_ui_t {
 	PuglView* pugl;
 };
 
-struct avtka_widget_t {
-};
-
-
-struct avtka_ui_t *
-avtka_ui_create(const char *window_name, uint32_t w_, uint32_t h_,
-		struct avtka_ui_opts_t *opts)
+struct avtka_t *
+avtka_create(const char *window_name, uint32_t w_, uint32_t h_,
+	     struct avtka_opts_t *opts)
 {
-	struct avtka_ui_t *ui = calloc(1, sizeof(struct avtka_ui_t));
+	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
 	if(!ui)
 		return 0;
 
@@ -56,7 +52,7 @@ avtka_ui_create(const char *window_name, uint32_t w_, uint32_t h_,
 }
 
 int32_t
-avtka_ui_destroy(struct avtka_ui_t *ui)
+avtka_destroy(struct avtka_t *ui)
 {
 	PuglView *view = ui->pugl;
 	puglHideWindow(view);
