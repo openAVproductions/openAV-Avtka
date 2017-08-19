@@ -14,20 +14,29 @@ struct avtka_item_t;
 struct avtka_opts_t {
 	uint32_t flags;
 	uint16_t w, h;
-	uint8_t padding[63];
+	uint8_t padding[56];
 };
 
 enum AVTKA_DRAW_IDS {
 	AVTKA_DRAW_NONE   = 0,
-	AVTKA_DRAW_DIAL   = 1,
-	AVTKA_DRAW_SLIDER = 2,
+	AVTKA_DRAW_BUTTON = 1,
+	AVTKA_DRAW_DIAL   = 2,
+	AVTKA_DRAW_SLIDER = 3,
+};
+enum AVTKA_INTERACT_IDS {
+	AVTKA_INTERACT_NONE   = 0,
+	AVTKA_INTERACT_CLICK  = 1,
+	AVTKA_INTERACT_TOGGLE = 2,
+	AVTKA_INTERACT_DRAG_V = 3,
+	AVTKA_INTERACT_DRAG_H = 4,
 };
 
 struct avtka_item_opts_t {
-	char name[ITEM_NAME_MAX];
 	uint16_t x, y, w, h;
 	uint8_t draw;
-	uint8_t padding[23];
+	uint8_t interact;
+	uint8_t padding[6];
+	char name[ITEM_NAME_MAX];
 };
 
 /* Instantiate a new window */

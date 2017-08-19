@@ -1,6 +1,6 @@
 /* This file is part of AVTKA by OpenAV */
 
-#include <stdlib.h>
+#include <stdio.h>
 
 #include "impl.h"
 #include "pugl.h"
@@ -62,8 +62,11 @@ on_display(PuglView* view)
 	/* iterate all items, calling "draw" on them */
 	for (int i = 0; i < a->item_count; i++) {
 		uint8_t draw_id = a->items[i].opts.draw;
-		if(a->draw[draw_id])
+		if(a->draw[draw_id]) {
+			cairo_save(cr);
 			a->draw[draw_id](a, &a->items[i], cr);
+			cairo_restore(cr);
+		}
 	}
 }
 
@@ -73,6 +76,11 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
 	if(!ui)
 		return 0;
+
+	if(sizeof(struct avtka_opts_t) != 64)
+		printf("avtka_opts_t != 64 bytes\n");
+	if(sizeof(struct avtka_item_opts_t) != 32)
+		printf("avtka_item_opts_t != 32 bytes\n");
 
 	PuglView *view = puglInit(NULL, NULL);
 
