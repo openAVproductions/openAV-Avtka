@@ -1,5 +1,6 @@
 /* This file is part of AVTKA by OpenAV */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -14,12 +15,13 @@ int main()
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 
 	struct avtka_item_opts_t item = {
-		.name = "Dial",
+		.name = "Dial 1",
 		.x = 10, .y = 10, .w = 50, .h = 50,
 		.draw = AVTKA_DRAW_DIAL,
 	};
 	uint32_t button1 = avtka_item_create(a, &item);
-	item. x = 200;
+	item.x = 70;
+	snprintf(item.name, sizeof(item.name), "Dial 2");
 	uint32_t button2 = avtka_item_create(a, &item);
 
 	avtka_item_visible_set(a, button1, 1);

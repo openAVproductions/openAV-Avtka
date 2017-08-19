@@ -47,15 +47,13 @@ on_display(PuglView* view)
 	cairo_t* cr = puglGetContext(view);
 	struct avtka_t *a = puglGetHandle(view);
 
-#if 0
+	cairo_set_source_rgb(cr, .12, .12, .12);
+#if 1
 	if (a->entered)
+		cairo_set_source_rgb(cr, .12, .12, .12);
 	else
 		cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
 #endif
-
-	cairo_set_source_rgb(cr, .12, .12, .12);
-
-	//cairo_rectangle(cr, 0, 0, 1024, 1024);
 	cairo_rectangle(cr, 0, 0, a->opts.w, a->opts.h);
 	cairo_fill(cr);
 
