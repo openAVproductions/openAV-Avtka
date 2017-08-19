@@ -1,5 +1,5 @@
 /*
-  Copyright 2012-2015 David Robillard <http://drobilla.net>
+  Copyright 2016 David Robillard <http://drobilla.net>
 
   Permission to use, copy, modify, and/or distribute this software for any
   purpose with or without fee is hereby granted, provided that the above
@@ -15,18 +15,18 @@
 */
 
 /**
-   @file gl.h Portable header wrapper for glu.h.
+   @file gl.h Portable header wrapper for glew.h.
 
    Unfortunately, GL includes vary across platforms so this header allows for
    pure portable programs.
 */
 
 #ifdef __APPLE__
-#    include "OpenGL/glu.h"
+#    include "OpenGL/glew.h"
 #else
 #    ifdef _WIN32
 #        include <windows.h>  /* Broken Windows GL headers require this */
 #    endif
-#    include "GL/glu.h"
+#    include "GL/glew.h"
 #endif
 

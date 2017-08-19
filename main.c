@@ -21,9 +21,7 @@ int main()
 	uint32_t button1 = avtka_item_create(a, &item);
 	avtka_item_visible_set(a, button1, 1);
 
-	while(1)
-		avtka_iterate(a);
+	avtka_run(a);
 
-	avtka_destroy(a);
 	return 0;
 }

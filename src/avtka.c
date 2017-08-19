@@ -72,7 +72,6 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	puglInitContextType (view, PUGL_CAIRO);
 	puglIgnoreKeyRepeat (view, true );
 
-	puglSetDisplayFunc  (view, on_display);
 	puglSetEventFunc    (view, on_event  );
 #if 0
 	puglSetCloseFunc    (view, UI::onClose  );
@@ -107,7 +106,7 @@ void avtka_iterate(struct avtka_t *a)
 void avtka_run(struct avtka_t *a)
 {
 	while (!a->quit) {
-		//puglWaitForEvent(a->pugl);
+		puglWaitForEvent(a->pugl);
 		puglProcessEvents(a->pugl);
 	}
 	avtka_destroy(a);

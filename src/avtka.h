@@ -36,6 +36,8 @@ struct avtka_t *avtka_create(const char *window_name,
 
 /* Update and redraw the UI */
 void avtka_iterate(struct avtka_t *a);
+/* Run unit a quit command is issued by the user */
+void avtka_run(struct avtka_t *a);
 
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
