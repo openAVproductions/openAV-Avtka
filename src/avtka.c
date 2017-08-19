@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #include "impl.h"
-#include "pugl.h"
+#include "pugl/pugl.h"
 
 #include <cairo/cairo.h>
 
