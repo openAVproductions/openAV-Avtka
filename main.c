@@ -8,14 +8,14 @@
 int main()
 {
 	struct avtka_opts_t opts = {
-		.w = 320,
-		.h = 120
+		.w = 820,
+		.h = 420
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 
 	struct avtka_item_opts_t item = {
 		.name = "Button 1",
-		.x = 10, .y = 10, .w = 50, .h = 22,
+		.x = 0, .y = 0, .w = 30, .h = 30,
 		.draw = AVTKA_DRAW_DIAL,
 	};
 	uint32_t button1 = avtka_item_create(a, &item);

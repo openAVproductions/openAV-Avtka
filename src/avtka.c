@@ -47,15 +47,24 @@ on_display(PuglView* view)
 	cairo_t* cr = puglGetContext(view);
 	struct avtka_t *a = puglGetHandle(view);
 
-	int width, height;
+#if 0
 	if (a->entered)
-		cairo_set_source_rgb(cr, 0, .5, 1);
 	else
 		cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
+#endif
 
-	cairo_rectangle(cr, 0, 0, 150, 100);
-	//cairo_rectangle(cr, 0, 0, a->w, a->h);
+	cairo_set_source_rgb(cr, .12, .12, .12);
+
+	//cairo_rectangle(cr, 0, 0, 1024, 1024);
+	cairo_rectangle(cr, 0, 0, a->opts.w, a->opts.h);
 	cairo_fill(cr);
+
+	/* iterate all items, calling "draw" on them */
+	for (int i = 0; i < a->item_count; i++) {
+		uint8_t draw_id = a->items[i].opts.draw;
+		if(a->draw[draw_id])
+			a->draw[draw_id](a, &a->items[i], cr);
+	}
 }
 
 struct avtka_t *
@@ -77,6 +86,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	ui->pugl = view;
 	puglSetHandle       (view, ui);
+
+	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
 
 	return ui;
 }
