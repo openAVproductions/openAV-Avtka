@@ -2,12 +2,14 @@
 
 #include <stdlib.h>
 
-#include "avtka.h"
+#include "impl.h"
 
 uint32_t
-avtka_item_create(struct avtka_t *ui)
+avtka_item_create(struct avtka_t *ui, struct avtka_item_opts_t *o)
 {
-	return 0;
+	ui->items[ui->item_count].opts = *o;
+	ui->item_count++;
+	return ui->item_count;
 }
 
 int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)

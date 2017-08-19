@@ -2,24 +2,64 @@
 
 #include <stdlib.h>
 
-#include "avtka.h"
+#include "impl.h"
 #include "pugl.h"
 
-struct avtka_item_t {
-	/* tailq for sub items */
-};
+#include <cairo/cairo.h>
 
-struct avtka_t {
-	/* a ui pointer can be treated as an item */
-	struct avtka_item_t item;
+static void on_display(PuglView* view);
 
-	/* implementation details */
-	PuglView* pugl;
-};
+static void
+on_event(PuglView* view, const PuglEvent* event)
+{
+	struct avtka_t *a = puglGetHandle(view);
+	switch (event->type) {
+	case PUGL_KEY_PRESS:
+		if (event->key.character == 'q' ||
+		    event->key.character == 'Q' ||
+		    event->key.character == PUGL_CHAR_ESCAPE) {
+			a->quit = 1;
+		}
+		break;
+	case PUGL_BUTTON_PRESS:
+		break;
+	case PUGL_ENTER_NOTIFY:
+		a->entered = true;
+		puglPostRedisplay(view);
+		break;
+	case PUGL_LEAVE_NOTIFY:
+		a->entered = false;
+		puglPostRedisplay(view);
+		break;
+	case PUGL_EXPOSE:
+		on_display(view);
+		break;
+	//case PUGL_CLOSE:
+		//onClose(view);
+		//break;
+	default: break;
+	}
+}
+
+static void
+on_display(PuglView* view)
+{
+	cairo_t* cr = puglGetContext(view);
+	struct avtka_t *a = puglGetHandle(view);
+
+	int width, height;
+	if (a->entered)
+		cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
+	else
+		cairo_set_source_rgb(cr, 0, 0, 0);
+
+	cairo_rectangle(cr, 0, 0, 150, 100);
+	//cairo_rectangle(cr, 0, 0, a->w, a->h);
+	cairo_fill(cr);
+}
 
 struct avtka_t *
-avtka_create(const char *window_name, uint32_t w_, uint32_t h_,
-	     struct avtka_opts_t *opts)
+avtka_create(const char *window_name, struct avtka_opts_t *opts)
 {
 	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
 	if(!ui)
@@ -27,14 +67,14 @@ avtka_create(const char *window_name, uint32_t w_, uint32_t h_,
 
 	PuglView *view = puglInit(NULL, NULL);
 
-	puglInitWindowSize  (view, w_, h_ );
+	puglInitWindowSize  (view, opts->w, opts->h);
 	puglInitResizable   (view, true );
 	puglInitContextType (view, PUGL_CAIRO);
 	puglIgnoreKeyRepeat (view, true );
 
+	puglSetDisplayFunc  (view, on_display);
+	puglSetEventFunc    (view, on_event  );
 #if 0
-	puglSetEventFunc    (view, UI::onEvent  );
-	puglSetDisplayFunc  (view, UI::onDisplay);
 	puglSetCloseFunc    (view, UI::onClose  );
 	puglSetMotionFunc   (view, UI::onMotion );
 	puglSetReshapeFunc  (view, UI::onReshape);
@@ -46,17 +86,29 @@ avtka_create(const char *window_name, uint32_t w_, uint32_t h_,
 	ui->pugl = view;
 	puglSetHandle       (view, ui);
 
-	puglProcessEvents(view);
-
 	return ui;
 }
 
 int32_t
-avtka_destroy(struct avtka_t *ui)
+avtka_destroy(struct avtka_t *a)
 {
-	PuglView *view = ui->pugl;
+	PuglView *view = a->pugl;
 	puglHideWindow(view);
 	puglProcessEvents(view);
-	free(ui);
+	free(a);
 	return 0;
+}
+
+void avtka_iterate(struct avtka_t *a)
+{
+	puglProcessEvents(a->pugl);
+}
+
+void avtka_run(struct avtka_t *a)
+{
+	while (!a->quit) {
+		//puglWaitForEvent(a->pugl);
+		puglProcessEvents(a->pugl);
+	}
+	avtka_destroy(a);
 }

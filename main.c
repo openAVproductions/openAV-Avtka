@@ -7,13 +7,22 @@
 
 int main()
 {
-	struct avtka_t *a = avtka_create("AVTKA v0.1", 360, 120, NULL);
+	struct avtka_opts_t opts = {
+		.w = 320,
+		.h = 120
+	};
+	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 
-	//uint32_t button1 = avtka_item_create(a, "button1", 
+	struct avtka_item_opts_t item = {
+		.name = "Button 1",
+		.x = 10, .y = 10, .w = 50, .h = 22,
+		.draw = AVTKA_DRAW_DIAL,
+	};
+	uint32_t button1 = avtka_item_create(a, &item);
+	avtka_item_visible_set(a, button1, 1);
 
-	avtka_item_visible_set(a, 0, 1);
-
-	sleep(1);
+	while(1)
+		avtka_iterate(a);
 
 	avtka_destroy(a);
 	return 0;
