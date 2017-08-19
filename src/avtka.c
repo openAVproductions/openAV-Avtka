@@ -49,9 +49,9 @@ on_display(PuglView* view)
 
 	int width, height;
 	if (a->entered)
-		cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
+		cairo_set_source_rgb(cr, 0, .5, 1);
 	else
-		cairo_set_source_rgb(cr, 0, 0, 0);
+		cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
 
 	cairo_rectangle(cr, 0, 0, 150, 100);
 	//cairo_rectangle(cr, 0, 0, a->w, a->h);
@@ -71,14 +71,7 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	puglInitResizable   (view, true );
 	puglInitContextType (view, PUGL_CAIRO);
 	puglIgnoreKeyRepeat (view, true );
-
 	puglSetEventFunc    (view, on_event  );
-#if 0
-	puglSetCloseFunc    (view, UI::onClose  );
-	puglSetMotionFunc   (view, UI::onMotion );
-	puglSetReshapeFunc  (view, UI::onReshape);
-#endif
-
 	puglCreateWindow    (view, window_name );
 	puglShowWindow      (view);
 

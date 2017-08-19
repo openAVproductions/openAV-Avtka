@@ -14,7 +14,6 @@ avtka_item_create(struct avtka_t *ui, struct avtka_item_opts_t *o)
 
 int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)
 {
-	//free(item);
 	return 0;
 }
 
