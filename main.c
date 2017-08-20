@@ -24,7 +24,7 @@ int main()
 	snprintf(item.name, sizeof(item.name), "Dial 2");
 	uint32_t button2 = avtka_item_create(a, &item);
 
-	avtka_item_visible_set(a, button1, 1);
+	printf("items created %d and %d\n", button1, button2);
 
 	avtka_run(a);
 

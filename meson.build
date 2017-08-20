@@ -11,9 +11,15 @@ install_headers(avtka_hdr, subdir: 'src')
 
 pkg = import('pkgconfig')
 pkg.generate(name: 'openav_avtka',
-              description: 'OpenAV Ctlra Library',
+              description: 'OpenAV Avtka Library',
               version: conf_data.get('version'),
               requires: ['cairo', 'x11'],
               libraries: avtka)
 
-#executable('simple', example_simple, include_directories: avtka_includes, link_with: )
+avtka_includes = include_directories('src')
+
+avtka_demo = files('main.c')
+
+executable('avtka_demo', avtka_demo,
+            include_directories: avtka_includes,
+            link_with: avtka)
