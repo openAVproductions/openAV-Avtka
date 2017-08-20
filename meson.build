@@ -7,7 +7,7 @@ cc  = meson.get_compiler('c')
 
 subdir('src')
 
-install_headers(avtka_hdr, subdir: 'src')
+install_headers(avtka_hdr, subdir: 'avtka')
 
 pkg = import('pkgconfig')
 pkg.generate(name: 'openav_avtka',

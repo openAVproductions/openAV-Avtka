@@ -12,6 +12,8 @@ typedef void (*avtka_draw)(struct avtka_t *, struct avtka_item_t *,
 			   void *cairo);
 
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
+void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
+void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 
 struct avtka_item_t {
 	/* public state of widget */

@@ -94,6 +94,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	puglSetHandle       (view, ui);
 
 	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
+	ui->draw[AVTKA_DRAW_SLIDER] = draw_slider;
+	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
 
 	return ui;
 }
