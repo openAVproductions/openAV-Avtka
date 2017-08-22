@@ -9,11 +9,15 @@
 
 /* forward declarations */
 struct avtka_t;
-struct avtka_item_t;
+
+typedef void (*avtka_event_cb)(struct avtka_t *avtka, uint32_t item,
+			       void *userdata);
 
 struct avtka_opts_t {
 	uint32_t flags;
 	uint16_t w, h;
+	avtka_event_cb event_callback;
+	void *event_callback_userdata;
 	uint8_t padding[56];
 };
 

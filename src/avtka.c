@@ -27,6 +27,10 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint32_t item = avtka_item_contact(a, x, y);
 		if(a->items[item].opts.interact == AVTKA_INTERACT_CLICK) {
 			a->items[item].value = !a->items[item].value;
+			if(a->opts.event_callback) {
+				a->opts.event_callback(a, item,
+					a->opts.event_callback_userdata);
+			}
 			puglPostRedisplay(view);
 		}
 		} break;
@@ -106,6 +110,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	/* item 0 is used as "no item", so start from 1 */
 	ui->item_count = 1;
+
+	ui->opts = *opts;
 
 	return ui;
 }

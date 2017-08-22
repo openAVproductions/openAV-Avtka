@@ -6,11 +6,17 @@
 
 #include "avtka.h"
 
+void event_cb(struct avtka_t *avtka, uint32_t item, void *userdata)
+{
+	printf("event on item %d\n", item);
+}
+
 int main()
 {
 	struct avtka_opts_t opts = {
 		.w = 360,
-		.h = 240
+		.h = 240,
+		.event_callback = event_cb,
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 

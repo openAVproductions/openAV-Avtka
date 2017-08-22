@@ -7,6 +7,14 @@
 #define AVTKA_MAX_ITEMS 1024
 #define AVTKA_MAX_DRAW 8
 
+struct avtka_item_t {
+	/* public state of widget */
+	struct avtka_item_opts_t opts;
+	/* private state of widget */
+	uint8_t clicked;
+	float value;
+};
+
 /* draw function callback */
 typedef void (*avtka_draw)(struct avtka_t *, struct avtka_item_t *,
 			   void *cairo);
@@ -15,13 +23,6 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 
-struct avtka_item_t {
-	/* public state of widget */
-	struct avtka_item_opts_t opts;
-	/* private state of widget */
-	uint8_t clicked;
-	float value;
-};
 
 struct avtka_t {
 	uint8_t quit;
