@@ -20,6 +20,7 @@ struct avtka_item_t {
 	struct avtka_item_opts_t opts;
 	/* private state of widget */
 	uint8_t clicked;
+	float value;
 };
 
 struct avtka_t {
@@ -39,3 +40,6 @@ struct avtka_t {
 	avtka_draw draw[AVTKA_MAX_DRAW];
 
 };
+
+
+uint32_t avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y);

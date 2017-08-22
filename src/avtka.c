@@ -21,8 +21,14 @@ on_event(PuglView* view, const PuglEvent* event)
 			a->quit = 1;
 		}
 		break;
-	case PUGL_BUTTON_PRESS:
-		break;
+	case PUGL_BUTTON_PRESS: {
+		uint32_t x = event->button.x;
+		uint32_t y = event->button.y;
+		uint32_t item = avtka_item_contact(a, x, y);
+		if(a->items[item].opts.interact == AVTKA_INTERACT_CLICK) {
+			printf("clicked on = %d\n", item);
+		}
+		} break;
 	case PUGL_ENTER_NOTIFY:
 		a->entered = true;
 		puglPostRedisplay(view);
@@ -96,6 +102,9 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
 	ui->draw[AVTKA_DRAW_SLIDER] = draw_slider;
 	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
+
+	/* item 0 is used as "no item", so start from 1 */
+	ui->item_count = 1;
 
 	return ui;
 }

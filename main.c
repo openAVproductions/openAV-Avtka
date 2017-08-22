@@ -18,6 +18,7 @@ int main()
 		.name = "Dial 1",
 		.x = 10, .y = 10, .w = 50, .h = 50,
 		.draw = AVTKA_DRAW_DIAL,
+		.interact = AVTKA_INTERACT_CLICK,
 	};
 	uint32_t button1 = avtka_item_create(a, &item);
 	item.x = 70;
