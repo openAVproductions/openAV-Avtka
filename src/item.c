@@ -21,7 +21,6 @@ avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y)
 		int y1 = it->opts.y < y;
 		int y2 = (it->opts.y + it->opts.w) > y;
 		if(x1 && x2 && y1 && y2) {
-			printf("item clicked: %d\n", i);
 			return i;
 		}
 	}

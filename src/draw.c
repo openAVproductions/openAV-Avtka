@@ -43,7 +43,7 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 
 	//printf("dial.. %d %d, %d %d\n", x_, y_, w_, h_);
 
-	float value = 0.7;
+	float value = item->value;
 	float label_visible = 1;
 	char *label = item->opts.name;
 

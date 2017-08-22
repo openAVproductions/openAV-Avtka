@@ -26,7 +26,8 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint32_t y = event->button.y;
 		uint32_t item = avtka_item_contact(a, x, y);
 		if(a->items[item].opts.interact == AVTKA_INTERACT_CLICK) {
-			printf("clicked on = %d\n", item);
+			a->items[item].value = !a->items[item].value;
+			puglPostRedisplay(view);
 		}
 		} break;
 	case PUGL_ENTER_NOTIFY:
