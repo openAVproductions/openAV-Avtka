@@ -6,9 +6,9 @@
 
 #include "avtka.h"
 
-void event_cb(struct avtka_t *avtka, uint32_t item, void *userdata)
+void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 {
-	printf("event on item %d\n", item);
+	printf("event on item %d, value %f\n", item, v);
 }
 
 int main()

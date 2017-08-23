@@ -29,6 +29,7 @@ on_event(PuglView* view, const PuglEvent* event)
 			a->items[item].value = !a->items[item].value;
 			if(a->opts.event_callback) {
 				a->opts.event_callback(a, item,
+					a->items[item].value,
 					a->opts.event_callback_userdata);
 			}
 			puglPostRedisplay(view);

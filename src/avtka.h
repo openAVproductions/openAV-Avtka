@@ -11,7 +11,7 @@
 struct avtka_t;
 
 typedef void (*avtka_event_cb)(struct avtka_t *avtka, uint32_t item,
-			       void *userdata);
+			       float value, void *userdata);
 
 struct avtka_opts_t {
 	uint32_t flags;
