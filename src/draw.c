@@ -31,6 +31,13 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_rectangle( cr, x_, y_, w_, h_);
 	cairo_set_source_rgba(cr, 0.4, 0.4, 0.4, 1);
 	cairo_stroke(cr);
+
+	const int32_t sh = 20;
+	float value = item->value;
+	int dy = y_ + ((1-value) * (h_- sh));
+	cairo_rectangle( cr, x_ + 1, dy, w_-2, sh);
+	cairo_set_source_rgba(cr, 0.0, 0.5, 1, 1);
+	cairo_stroke(cr);
 }
 
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)

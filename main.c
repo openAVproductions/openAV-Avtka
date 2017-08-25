@@ -28,7 +28,10 @@ int main()
 	};
 	uint32_t button1 = avtka_item_create(a, &item);
 	item.x = 70;
-	snprintf(item.name, sizeof(item.name), "Dial 2");
+	item.h = 150;
+	item.draw = AVTKA_DRAW_SLIDER;
+	item.interact = AVTKA_INTERACT_CLICK;
+	snprintf(item.name, sizeof(item.name), "Slider 1");
 	uint32_t button2 = avtka_item_create(a, &item);
 
 	printf("items created %d and %d\n", button1, button2);
