@@ -24,15 +24,16 @@ int main()
 		.name = "Dial 1",
 		.x = 10, .y = 10, .w = 50, .h = 50,
 		.draw = AVTKA_DRAW_DIAL,
-		.interact = AVTKA_INTERACT_CLICK,
+		.interact = AVTKA_INTERACT_DRAG_V,
 	};
-	uint32_t button1 = avtka_item_create(a, &item);
+	uint32_t i1 = avtka_item_create(a, &item);
+
 	item.x = 70;
 	item.h = 150;
 	item.draw = AVTKA_DRAW_SLIDER;
 	item.interact = AVTKA_INTERACT_DRAG_V;
 	snprintf(item.name, sizeof(item.name), "Slider 1");
-	uint32_t button2 = avtka_item_create(a, &item);
+	uint32_t i2 = avtka_item_create(a, &item);
 
 	item.x = 130;
 	item.w = 150;
@@ -40,9 +41,9 @@ int main()
 	item.draw = AVTKA_DRAW_SLIDER;
 	item.interact = AVTKA_INTERACT_DRAG_H;
 	snprintf(item.name, sizeof(item.name), "Slider (Horizontal)");
-	uint32_t button3 = avtka_item_create(a, &item);
+	uint32_t i3 = avtka_item_create(a, &item);
 
-	printf("items created %d, %d and %d\n", button1, button2, button3);
+	printf("items created %d, %d, %d\n", i1, i2, i3);
 
 	avtka_run(a);
 
