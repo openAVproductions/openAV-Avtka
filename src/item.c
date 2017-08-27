@@ -19,7 +19,7 @@ avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y)
 		int x1 = it->opts.x < x;
 		int x2 = (it->opts.x + it->opts.w) > x;
 		int y1 = it->opts.y < y;
-		int y2 = (it->opts.y + it->opts.w) > y;
+		int y2 = (it->opts.y + it->opts.h) > y;
 		if(x1 && x2 && y1 && y2) {
 			return i;
 		}
