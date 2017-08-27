@@ -34,8 +34,19 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 
 	const int32_t sh = 20;
 	float value = item->value;
-	int dy = y_ + ((1-value) * (h_- sh));
-	cairo_rectangle( cr, x_ + 1, dy, w_-2, sh);
+
+	/* vertial or horizontal orientation */
+	if(h_ > w_) {
+		int dy = y_ + ((1-value) * (h_- sh));
+		cairo_rectangle( cr, x_ + 1, dy, w_-2, sh);
+	}
+	else {
+		int dx = x_ + ((1-value) * (w_- sh));
+		cairo_rectangle( cr, dx, y_ + 1, sh, h_ - 2);
+	}
+
+	cairo_set_source_rgba(cr, 0.0, 0.5, 1, 0.3);
+	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 0.0, 0.5, 1, 1);
 	cairo_stroke(cr);
 }
