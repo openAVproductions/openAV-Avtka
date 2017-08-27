@@ -30,7 +30,7 @@ int main()
 	item.x = 70;
 	item.h = 150;
 	item.draw = AVTKA_DRAW_SLIDER;
-	item.interact = AVTKA_INTERACT_CLICK;
+	item.interact = AVTKA_INTERACT_DRAG_V;
 	snprintf(item.name, sizeof(item.name), "Slider 1");
 	uint32_t button2 = avtka_item_create(a, &item);
 

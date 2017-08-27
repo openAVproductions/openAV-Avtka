@@ -25,14 +25,21 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint32_t x = event->button.x;
 		uint32_t y = event->button.y;
 		uint32_t item = avtka_item_contact(a, x, y);
-		if(a->items[item].opts.interact == AVTKA_INTERACT_CLICK) {
-			a->items[item].value = !a->items[item].value;
-			if(a->opts.event_callback) {
-				a->opts.event_callback(a, item,
-					a->items[item].value,
-					a->opts.event_callback_userdata);
-			}
+		int32_t redraw = avtka_interact_press(a, item, x, y);
+		if(redraw)
 			puglPostRedisplay(view);
+		} break;
+	case PUGL_BUTTON_RELEASE: {
+		a->clicked_item = 0;
+		} break;
+	case PUGL_MOTION_NOTIFY: {
+		if(a->clicked_item) {
+			int32_t redraw = avtka_interact_motion(a,
+							       a->clicked_item,
+							       event->motion.x,
+							       event->motion.y);
+			if(redraw)
+				puglPostRedisplay(view);
 		}
 		} break;
 	case PUGL_ENTER_NOTIFY:

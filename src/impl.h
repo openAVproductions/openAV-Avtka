@@ -11,7 +11,7 @@ struct avtka_item_t {
 	/* public state of widget */
 	struct avtka_item_opts_t opts;
 	/* private state of widget */
-	uint8_t clicked;
+	uint16_t clicked;
 	float value;
 };
 
@@ -22,6 +22,11 @@ typedef void (*avtka_draw)(struct avtka_t *, struct avtka_item_t *,
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
+
+int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
+			     uint32_t x, uint32_t y);
+int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
+			      int32_t x, int32_t y);
 
 
 struct avtka_t {
@@ -39,6 +44,9 @@ struct avtka_t {
 
 	/* array of draw routines */
 	avtka_draw draw[AVTKA_MAX_DRAW];
+
+	/* special cased widgets */
+	uint32_t clicked_item;
 
 };
 
