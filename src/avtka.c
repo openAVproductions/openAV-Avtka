@@ -65,9 +65,9 @@ on_event(PuglView* view, const PuglEvent* event)
 	case PUGL_EXPOSE:
 		on_display(view);
 		break;
-	//case PUGL_CLOSE:
-		//onClose(view);
-		//break;
+	case PUGL_CLOSE:
+		a->quit = 1;
+		break;
 	default: break;
 	}
 }
@@ -141,7 +141,7 @@ avtka_destroy(struct avtka_t *a)
 {
 	PuglView *view = a->pugl;
 	puglHideWindow(view);
-	puglProcessEvents(view);
+	puglDestroy(view);
 	free(a);
 	return 0;
 }
