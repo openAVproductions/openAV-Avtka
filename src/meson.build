@@ -4,9 +4,12 @@ avtka_src += files('pugl/pugl_x11.c')
 
 cairo = dependency('cairo')
 x11   = dependency('x11')
+gl    = dependency('GL')
 
 avtka = static_library('avtka',
     [avtka_src],
-    c_args: ['-DPUGL_HAVE_CAIRO', '-Isrc/pugl/'],
+    c_args: ['-DPUGL_HAVE_CAIRO',
+             '-DPUGL_HAVE_GL',
+             '-Isrc/pugl/'],
     install : true,
-    dependencies: [cairo, x11])
+    dependencies: [cairo, x11, gl])
