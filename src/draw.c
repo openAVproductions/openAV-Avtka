@@ -41,7 +41,7 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 		cairo_rectangle( cr, x_ + 1, dy, w_-2, sh);
 	}
 	else {
-		int dx = x_ + ((1-value) * (w_- sh));
+		int dx = x_ + ((value) * (w_- sh));
 		cairo_rectangle( cr, dx, y_ + 1, sh, h_ - 2);
 	}
 

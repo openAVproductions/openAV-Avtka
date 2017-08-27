@@ -58,7 +58,7 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 		} return 1;
 	case AVTKA_INTERACT_DRAG_H: {
 		float tmp = ( ((int32_t)x) - a->items[item].clicked);
-		float val_offset = -(tmp / 150.f);
+		float val_offset = (tmp / 150.f);
 		tmp = a->items[item].value + val_offset;
 		tmp = tmp > 1.0f ? 1.0 : tmp;
 		tmp = tmp < 0.0f ? 0.0 : tmp;
