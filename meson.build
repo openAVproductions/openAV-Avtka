@@ -13,7 +13,7 @@ pkg = import('pkgconfig')
 pkg.generate(name: 'openav_avtka',
               description: 'OpenAV Avtka Library',
               version: conf_data.get('version'),
-              requires: ['cairo', 'x11'],
+              requires: ['cairo', 'x11', 'gl'],
               libraries: avtka)
 
 avtka_includes = include_directories('src')
