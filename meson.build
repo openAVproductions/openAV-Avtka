@@ -18,7 +18,7 @@ pkg.generate(name: 'openav_avtka',
 
 avtka_includes = include_directories('src')
 
-avtka_demo = files('main.c')
+avtka_demo = files('demo.c')
 
 executable('avtka_demo', avtka_demo,
             include_directories: avtka_includes,
