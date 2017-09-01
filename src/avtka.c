@@ -22,8 +22,8 @@ on_event(PuglView* view, const PuglEvent* event)
 		}
 		break;
 	case PUGL_BUTTON_PRESS: {
-		uint32_t x = event->button.x;
-		uint32_t y = event->button.y;
+		uint32_t x = event->button.x * a->rescale;
+		uint32_t y = event->button.y * a->rescale;
 		uint32_t item = avtka_item_contact(a, x, y);
 		int32_t redraw = avtka_interact_press(a, item, x, y);
 		if(redraw)
@@ -34,10 +34,11 @@ on_event(PuglView* view, const PuglEvent* event)
 		} break;
 	case PUGL_MOTION_NOTIFY: {
 		if(a->clicked_item) {
+			int x = event->motion.x * a->rescale;
+			int y = event->motion.y * a->rescale;
 			int32_t redraw = avtka_interact_motion(a,
 							       a->clicked_item,
-							       event->motion.x,
-							       event->motion.y);
+							       x, y);
 			if(redraw)
 				puglPostRedisplay(view);
 		}
@@ -66,6 +67,21 @@ on_display(PuglView* view)
 	cairo_t* cr = puglGetContext(view);
 	struct avtka_t *a = puglGetHandle(view);
 
+	int width;
+	int height;
+	puglGetSize(view, &width, &height);
+
+	int orig_width = a->opts.w;
+	int orig_height = a->opts.h;
+	float rw = ((float)width) / orig_width;
+	float rh = ((float)height) / orig_height;
+	float min_ratio = rw >= rh ? rh : rw;
+	/* resize the whole cairo drawing, to draw bigger */
+	cairo_scale(cr, min_ratio, min_ratio);
+
+	a->rescale = 1.f / min_ratio;
+
+
 	cairo_set_source_rgb(cr, .12, .12, .12);
 #if 1
 	if (a->entered)
@@ -85,6 +101,8 @@ on_display(PuglView* view)
 			cairo_restore(cr);
 		}
 	}
+
+	cairo_identity_matrix (cr);
 }
 
 struct avtka_t *
