@@ -3,20 +3,64 @@
 #include <cairo.h>
 #include <stdio.h>
 
-void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* c)
+#define TRANS (0.2)
+#define FILL  (1.0)
+
+struct col_t {
+	float r;
+	float g;
+	float b;
+};
+
+static const struct col_t bg[] = {
+	{0.40, 0.40, 0.40}, /* BG */
+	{0.40, 0.40, 0.40}, /* BG */
+};
+
+static const struct col_t fg[] = {
+	{0.00, 0.51, 1.00}, /* FG Fade */
+	{0.00, 0.51, 1.00}, /* FG */
+};
+
+enum COLOURS {
+	COL_BG,
+	COL_FG_FADE,
+	COL_FG,
+};
+
+static inline void
+draw_set_col(cairo_t *cr, const struct col_t *c, float a)
 {
-	cairo_t* cr = c;
+	cairo_set_source_rgba(cr, c->r, c->g, c->b, a);
+}
+
+void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
+{
+	cairo_t* cr = cairo;
 	const int32_t x_ = item->opts.x;
 	const int32_t y_ = item->opts.y;
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
+	const struct col_t* c = item->value > 0.5 ? fg : bg;
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
-	cairo_set_source_rgba(cr, 0.0, 0.51, 1, 0.2);
+	draw_set_col(cr, c, TRANS);
 	cairo_fill_preserve(cr);
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
-	cairo_set_source_rgba(cr, 0.0, 0.51, 1, 1);
+	draw_set_col(cr, c, FILL);
+	cairo_stroke(cr);
+
+	char *label = item->opts.name;
+	float label_visible = 1;
+	if(label_visible) {
+		cairo_text_extents_t ext;
+		cairo_text_extents( cr, label, &ext );
+
+		cairo_move_to( cr, x_+w_/2-ext.width/2., y_+h_+ext.height/2.-6);
+		cairo_set_source_rgb( cr, 1,1,1 );
+		cairo_show_text( cr, label );
+	}
 	cairo_stroke(cr);
 }
 

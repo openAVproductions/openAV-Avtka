@@ -43,7 +43,15 @@ int main()
 	snprintf(item.name, sizeof(item.name), "Slider (Horizontal)");
 	uint32_t i3 = avtka_item_create(a, &item);
 
-	printf("items created %d, %d, %d\n", i1, i2, i3);
+	item.y =  80;
+	item.h =  30;
+	item.w =  30;
+	item.draw = AVTKA_DRAW_BUTTON;
+	item.interact = AVTKA_INTERACT_CLICK;
+	snprintf(item.name, sizeof(item.name), "BTN");
+	uint32_t i4 = avtka_item_create(a, &item);
+
+	printf("items created %d, %d, %d %d\n", i1, i2, i3, i4);
 
 	avtka_run(a);
 
