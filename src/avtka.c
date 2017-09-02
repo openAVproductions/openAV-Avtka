@@ -33,6 +33,14 @@ on_event(PuglView* view, const PuglEvent* event)
 			puglPostRedisplay(view);
 		} break;
 	case PUGL_BUTTON_RELEASE: {
+		if(a->clicked_item == 0)
+			printf("AVTKA: Warning, button release was item 0\n");
+		uint32_t x = event->button.x * scale_inv;
+		uint32_t y = event->button.y * scale_inv;
+		int32_t redraw = avtka_interact_release(a, a->clicked_item,
+							x, y);
+		if(redraw)
+			puglPostRedisplay(view);
 		a->clicked_item = 0;
 		} break;
 	case PUGL_MOTION_NOTIFY: {

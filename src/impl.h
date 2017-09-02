@@ -25,6 +25,8 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 
 int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 			     uint32_t x, uint32_t y);
+int32_t avtka_interact_release(struct avtka_t *a, uint32_t item,
+			       uint32_t x, uint32_t y);
 int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 			      int32_t x, int32_t y);
 

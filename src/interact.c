@@ -17,6 +17,7 @@ int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 				a->items[item].value,
 				a->opts.event_callback_userdata);
 		}
+		a->clicked_item = item;
 		/* redraw */
 		return 1;
 	case AVTKA_INTERACT_DRAG_V:
@@ -31,6 +32,25 @@ int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 		a->clicked_item = item;
 		/* no redraw yet */
 		return 0;
+	default: break;
+	}
+
+	return 0;
+}
+
+int32_t avtka_interact_release(struct avtka_t *a, uint32_t item,
+			       uint32_t x, uint32_t y)
+{
+	switch(a->items[item].opts.interact) {
+	case AVTKA_INTERACT_CLICK:
+		a->items[item].value = !a->items[item].value;
+		/* perform callback */
+		if(a->opts.event_callback) {
+			a->opts.event_callback(a, item,
+				a->items[item].value,
+				a->opts.event_callback_userdata);
+		}
+		return 1;
 	default: break;
 	}
 
