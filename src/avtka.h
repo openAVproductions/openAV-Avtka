@@ -3,6 +3,10 @@
 #ifndef AVTKA_H
 #define AVTKA_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #define ITEM_NAME_MAX 16
@@ -64,5 +68,10 @@ void avtka_item_visible_set(struct avtka_t *a,
 /* Create/destroy an item */
 uint32_t avtka_item_create(struct avtka_t *a, struct avtka_item_opts_t *o);
 int32_t avtka_item_destroy(struct avtka_t *a, uint32_t item_id);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* AVTKA_H */
