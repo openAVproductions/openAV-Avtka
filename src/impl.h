@@ -11,7 +11,6 @@ struct avtka_item_t {
 	/* public state of widget */
 	struct avtka_item_opts_t opts;
 	/* private state of widget */
-	int16_t clicked;
 	float value;
 };
 
@@ -50,7 +49,8 @@ struct avtka_t {
 
 	/* special cased widgets */
 	uint32_t clicked_item;
-
+	int32_t clicked_x;
+	int32_t clicked_y;
 };
 
 
