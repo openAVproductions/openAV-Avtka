@@ -114,10 +114,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	if(!ui)
 		return 0;
 
-	if(sizeof(struct avtka_opts_t) != 64)
-		printf("avtka_opts_t != 64 bytes\n");
-	if(sizeof(struct avtka_item_opts_t) != 32)
-		printf("avtka_item_opts_t != 32 bytes\n");
+	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
+	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 32);
 
 	PuglView *view = puglInit(NULL, NULL);
 

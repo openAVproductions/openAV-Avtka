@@ -4,6 +4,8 @@
 
 #include "avtka.h"
 
+#define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+
 #define AVTKA_MAX_ITEMS 1024
 #define AVTKA_MAX_DRAW 8
 

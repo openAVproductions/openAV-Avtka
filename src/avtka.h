@@ -15,10 +15,11 @@ typedef void (*avtka_event_cb)(struct avtka_t *avtka, uint32_t item,
 
 struct avtka_opts_t {
 	uint32_t flags;
-	uint16_t w, h;
+	uint16_t w;
+	uint16_t h;
 	avtka_event_cb event_callback;
 	void *event_callback_userdata;
-	uint8_t padding[56];
+	uint8_t padding[40];
 };
 
 enum AVTKA_DRAW_IDS {
