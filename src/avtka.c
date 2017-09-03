@@ -138,6 +138,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	/* item 0 is used as "no item", so start from 1 */
 	ui->item_count = 1;
+	/* default drag sensitivity: 150px native size UI from 0 to 1 */
+	ui->drag_sensitivity = 150.f;
 
 	ui->opts = *opts;
 

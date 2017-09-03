@@ -31,11 +31,13 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 
 
 struct avtka_t {
+	struct avtka_opts_t opts;
+
 	uint8_t quit;
 	uint8_t entered;
 	float rescale;
+	float drag_sensitivity;
 
-	struct avtka_opts_t opts;
 
 	/* implementation details */
 	void* pugl;

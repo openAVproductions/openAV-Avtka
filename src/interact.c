@@ -66,7 +66,7 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 		float tmp_y = y - click_y;
 		float tmp = (interact == AVTKA_INTERACT_DRAG_V) ?
 				tmp_y : tmp_x;
-		float val_offset = -(tmp / 150.f);
+		float val_offset = -(tmp / a->drag_sensitivity);
 		tmp = a->items[item].value + val_offset;
 		tmp = tmp > 1.0f ? 1.0 : tmp;
 		tmp = tmp < 0.0f ? 0.0 : tmp;
