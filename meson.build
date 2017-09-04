@@ -1,9 +1,12 @@
-project('openav_avtka', 'c')
+project('openav_avtka', ['c','cpp'])
 
 conf_data = configuration_data()
 conf_data.set('version', '0.1')
 
+add_project_arguments('-std=c++11', language : 'cpp')
+
 cc  = meson.get_compiler('c')
+cpp = meson.get_compiler('cpp')
 
 subdir('src')
 
@@ -23,3 +26,15 @@ avtka_demo = files('demo.c')
 executable('avtka_demo', avtka_demo,
             include_directories: avtka_includes,
             link_with: avtka)
+
+
+subdir('tests')
+
+bench = dependency('benchmark')
+threads = dependency('threads')
+
+tests = executable('avtka_tests',
+                    test_files,
+                    link_with: avtka,
+                    dependencies: [bench, threads])
+test('Performance Tests', tests)
