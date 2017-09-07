@@ -51,6 +51,15 @@ int main()
 	snprintf(item.name, sizeof(item.name), "BTN");
 	uint32_t i4 = avtka_item_create(a, &item);
 
+	item.x = 180;
+	item.y = 100;
+	item.w = 100;
+	item.h = 100;
+	item.draw = AVTKA_DRAW_JOG_WHEEL;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "Jog Wheel");
+	avtka_item_create(a, &item);
+
 	printf("items created %d, %d, %d %d\n", i1, i2, i3, i4);
 
 	avtka_run(a);
