@@ -22,6 +22,8 @@ int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 		return 1;
 	case AVTKA_INTERACT_DRAG_V: /* fallthrough */
 	case AVTKA_INTERACT_DRAG_H:
+	case AVTKA_INTERACT_DRAG_DELTA_V:
+	case AVTKA_INTERACT_DRAG_DELTA_H:
 		/* store the verital click position */
 		a->clicked_item = item;
 		a->clicked_x = x;
@@ -77,6 +79,28 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 		if(a->opts.event_callback) {
 			a->opts.event_callback(a, item,
 				a->items[item].value,
+				a->opts.event_callback_userdata);
+		}
+		} return 1;
+	case AVTKA_INTERACT_DRAG_DELTA_V: /* fallthrough */
+	case AVTKA_INTERACT_DRAG_DELTA_H: {
+		int32_t click_x = a->clicked_x;
+		int32_t click_y = a->clicked_y;
+		float tmp_x = -(x - click_x);
+		float tmp_y = y - click_y;
+		float tmp = (interact == AVTKA_INTERACT_DRAG_DELTA_V) ?
+				tmp_y : tmp_x;
+		float val_offset = -(tmp / a->drag_sensitivity);
+		tmp = a->items[item].value + val_offset;
+		if(tmp > 1.0f) tmp -= 1.0f;
+		if(tmp < 0.0f) tmp += 1.0f;
+		a->items[item].value = tmp;
+		a->clicked_x = x;
+		a->clicked_y = y;
+
+		if(a->opts.event_callback && val_offset) {
+			a->opts.event_callback(a, item,
+				val_offset,
 				a->opts.event_callback_userdata);
 		}
 		} return 1;

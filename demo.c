@@ -56,7 +56,7 @@ int main()
 	item.w = 100;
 	item.h = 100;
 	item.draw = AVTKA_DRAW_JOG_WHEEL;
-	item.interact = AVTKA_INTERACT_DRAG_V;
+	item.interact = AVTKA_INTERACT_DRAG_DELTA_V;
 	snprintf(item.name, sizeof(item.name), "Jog Wheel");
 	avtka_item_create(a, &item);
 
