@@ -27,6 +27,18 @@ avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y)
 	return 0;
 }
 
+void avtka_item_value(struct avtka_t *a, uint32_t item, float value)
+{
+	struct avtka_item_t *it = &a->items[item];
+	it->value = value;
+}
+
+void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value)
+{
+	struct avtka_item_t *it = &a->items[item];
+	it->value += value;
+}
+
 int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)
 {
 	return 0;

@@ -70,6 +70,9 @@ int32_t avtka_destroy(struct avtka_t *a);
 void avtka_item_visible_set(struct avtka_t *a,
 			    uint32_t item,
 			    uint32_t visible);
+/* Set value of the item */
+void avtka_item_value(struct avtka_t *a, uint32_t item, float value);
+void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value);
 
 /* Create/destroy an item */
 uint32_t avtka_item_create(struct avtka_t *a, struct avtka_item_opts_t *o);
