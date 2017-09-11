@@ -153,6 +153,11 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_move_to( cr, x_, y_);
 	cairo_set_source_rgba(cr, 0., 0.51, 1, 0.8);
 	cairo_new_sub_path( cr );
+	/* Crude NaN detection - cairo assert trips if it gets a NaN in arc() */
+	if(value != value) {
+		value = 0.f;
+	}
+
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, 2.46, 2.46 + 4.54 * value );
 	cairo_set_line_width(cr, w_ / 7.f);
 	cairo_stroke(cr);
