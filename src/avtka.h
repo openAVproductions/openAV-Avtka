@@ -48,7 +48,8 @@ struct avtka_item_opts_t {
 	uint16_t x, y, w, h;
 	uint8_t draw;
 	uint8_t interact;
-	uint8_t padding[6];
+	uint8_t params[4];
+	uint8_t padding[2];
 	char name[ITEM_NAME_MAX];
 };
 
