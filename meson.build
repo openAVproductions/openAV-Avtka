@@ -37,4 +37,10 @@ tests = executable('avtka_tests',
                     test_files,
                     link_with: avtka,
                     dependencies: [bench, threads])
-test('Performance Tests', tests)
+#test('Performance Tests', tests)
+
+test_create = executable('test_create',
+                    test_create,
+                    link_with: avtka)
+test('Create', test_create)
+test('Create Envvar', test_create, env : ['AVTKA_DEBUG=3'])

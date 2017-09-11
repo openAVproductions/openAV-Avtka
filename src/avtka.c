@@ -143,8 +143,6 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	ui->opts = *opts;
 
-
-
 	PuglView *view = puglInit(NULL, NULL);
 
 	puglInitWindowSize  (view, opts->w, opts->h);
@@ -191,12 +189,14 @@ avtka_destroy(struct avtka_t *a)
 	return 0;
 }
 
-void avtka_iterate(struct avtka_t *a)
+void
+avtka_iterate(struct avtka_t *a)
 {
 	puglProcessEvents(a->pugl);
 }
 
-void avtka_run(struct avtka_t *a)
+void
+avtka_run(struct avtka_t *a)
 {
 	while (!a->quit) {
 		puglWaitForEvent(a->pugl);
