@@ -120,7 +120,7 @@ void draw_led_strip(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	//uint8_t orange   = item->opts.params[2];
 	//printf("%s %d: v = %f\n", __func__, num_segs, value);
 	if(!num_segs) {
-		printf("num segs == 0, return\n");
+		AVTKA_WARN(a, "num segs == %d, returning\n", num_segs);
 		return;
 	}
 
