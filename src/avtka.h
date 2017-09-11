@@ -11,6 +11,11 @@ extern "C" {
 
 #define ITEM_NAME_MAX 16
 
+/* Errors only is default */
+#define AVTKA_DEBUG_ERROR 0
+#define AVTKA_DEBUG_WARN  1
+#define AVTKA_DEBUG_INFO  2
+
 /* forward declarations */
 struct avtka_t;
 
@@ -23,7 +28,10 @@ struct avtka_opts_t {
 	uint16_t h;
 	avtka_event_cb event_callback;
 	void *event_callback_userdata;
-	uint8_t padding[40];
+	/* debug verbosity */
+	uint8_t debug_level;
+
+	uint8_t padding[39];
 };
 
 enum AVTKA_DRAW_IDS {

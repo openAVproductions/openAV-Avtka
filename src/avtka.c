@@ -34,7 +34,8 @@ on_event(PuglView* view, const PuglEvent* event)
 		} break;
 	case PUGL_BUTTON_RELEASE: {
 		if(a->clicked_item == 0)
-			printf("AVTKA: Warning, button release was item 0\n");
+			AVTKA_INFO(a, "Button release was %d\n",
+				   a->clicked_item);
 		uint32_t x = event->button.x * scale_inv;
 		uint32_t y = event->button.y * scale_inv;
 		int32_t redraw = avtka_interact_release(a, a->clicked_item,
@@ -110,17 +111,39 @@ on_display(PuglView* view)
 struct avtka_t *
 avtka_create(const char *window_name, struct avtka_opts_t *opts)
 {
-	if(opts->w == 0 || opts->h == 0) {
-		printf("AVTKA ERROR: W or H of window is ZERO. Failing\n");
+	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
+	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 32);
+
+	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
+	if(!ui) {
+		AVTKA_ERROR(0, "failed to allocate memory: ui %p\n", ui);
 		return 0;
 	}
 
-	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
-	if(!ui)
-		return 0;
+	/* ENV variables override application opts */
+	char *avtka_debug = getenv("AVTKA_DEBUG");
+	if(avtka_debug) {
+		int debug_level = atoi(avtka_debug);
+		ui->opts.debug_level = debug_level;
+		if(debug_level >= AVTKA_DEBUG_INFO)
+			AVTKA_INFO(ui, "debug level: %d\n", debug_level);
+	}
 
-	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
-	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 32);
+	if(!window_name || !opts) {
+		AVTKA_ERROR(ui, "invalid window name or NULL opts: name: '%s' opts: %p\n",
+			    window_name, opts);
+		goto fail;
+	}
+
+	if(opts->w == 0 || opts->h == 0) {
+		AVTKA_ERROR(ui, "invalid window parameters: w: %d, h: %d\n",
+			    opts->w, opts->h);
+		goto fail;
+	}
+
+	ui->opts = *opts;
+
+
 
 	PuglView *view = puglInit(NULL, NULL);
 
@@ -130,10 +153,9 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	puglIgnoreKeyRepeat (view, true );
 	puglSetEventFunc    (view, on_event  );
 	puglCreateWindow    (view, window_name );
-	puglShowWindow      (view);
-
-	ui->pugl = view;
 	puglSetHandle       (view, ui);
+	puglShowWindow      (view);
+	ui->pugl = view;
 
 	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
 	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
@@ -146,9 +168,11 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	/* default drag sensitivity: 150px native size UI from 0 to 1 */
 	ui->drag_sensitivity = 150.f;
 
-	ui->opts = *opts;
-
 	return ui;
+fail:
+	if(ui)
+		free(ui);
+	return 0;
 }
 
 void

@@ -19,6 +19,10 @@ int main()
 		.event_callback = event_cb,
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
+	if(!a) {
+		printf("failed to create avtka instance, quitting\n");
+		return 0;
+	}
 
 	struct avtka_item_opts_t item = {
 		.name = "Dial 1",

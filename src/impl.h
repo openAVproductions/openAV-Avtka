@@ -6,6 +6,21 @@
 
 #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
 
+#define AVTKA_ERROR(avtka, fmt, ...)					\
+	do { fprintf(stderr, "[\033[1;31m%s +%d\033[0m] " fmt,		\
+		__func__, __LINE__, __VA_ARGS__);			\
+	} while (0)
+#define AVTKA_WARN(avtka, fmt, ...)					\
+	do { if (avtka->opts.debug_level >= AVTKA_DEBUG_WARN)		\
+	fprintf(stderr, "[\033[1;33m%s +%d\033[0m] " fmt,		\
+		__func__, __LINE__, __VA_ARGS__);			\
+	} while (0)
+#define AVTKA_INFO(avtka, fmt, ...)					\
+	do { if (avtka->opts.debug_level >= AVTKA_DEBUG_INFO)		\
+	fprintf(stderr, "[\033[1;32m%s +%d\033[0m] " fmt,		\
+		__func__, __LINE__, __VA_ARGS__);			\
+	} while (0)
+
 #define AVTKA_MAX_ITEMS 1024
 #define AVTKA_MAX_DRAW 8
 
