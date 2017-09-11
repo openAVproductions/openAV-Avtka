@@ -56,6 +56,7 @@ struct avtka_item_opts_t {
 struct avtka_t *avtka_create(const char *window_name,
 			     struct avtka_opts_t *opts);
 
+void avtka_redraw(struct avtka_t *a);
 /* Update and redraw the UI */
 void avtka_iterate(struct avtka_t *a);
 /* Run unit a quit command is issued by the user */

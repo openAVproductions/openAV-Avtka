@@ -151,6 +151,12 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	return ui;
 }
 
+void
+avtka_redraw(struct avtka_t *a)
+{
+	puglPostRedisplay(a->pugl);
+}
+
 int32_t
 avtka_destroy(struct avtka_t *a)
 {
