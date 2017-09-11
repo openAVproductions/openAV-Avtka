@@ -95,6 +95,44 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_stroke(cr);
 }
 
+void draw_led_strip(struct avtka_t *a, struct avtka_item_t *item, void* c)
+{
+	cairo_t* cr = c;
+	const int32_t x_ = item->opts.x;
+	const int32_t y_ = item->opts.y;
+	const int32_t w_ = item->opts.w;
+	const int32_t h_ = item->opts.h;
+	float value = item->value;
+
+	uint8_t num_segs = item->opts.params[0];
+	uint8_t orange   = item->opts.params[2];
+	printf("%s %d: v = %f\n", __func__, num_segs, value);
+	if(!num_segs) {
+		printf("num segs == 0, return\n");
+		return;
+	}
+
+	/* TODO: add support for horizontal / vertial */
+	uint32_t led_dist = h_ / (num_segs);
+	uint32_t led_height = h_ / (num_segs + 2);
+
+	uint32_t delta = (led_dist - led_height);
+
+	cairo_set_line_width(cr, 1.5);
+	for(int i = 0; i < num_segs; i++) {
+		int y = (y_ + h_) - (led_dist * (i+1)) + (delta/2);
+		cairo_rectangle( cr, x_ + 1, y, w_ - 2, led_height);
+		if(i < value * num_segs) {
+			cairo_set_source_rgba(cr, 0.0, 0.5, 1, 0.8);
+			cairo_fill(cr);
+		} else {
+			cairo_set_source_rgba(cr, 0.5, 0.5, 0.5, 0.5);
+			cairo_stroke(cr);
+		}
+	}
+	cairo_stroke(cr);
+}
+
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 {
 	cairo_t* cr = c;

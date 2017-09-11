@@ -135,10 +135,11 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	ui->pugl = view;
 	puglSetHandle       (view, ui);
 
-	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
-	ui->draw[AVTKA_DRAW_SLIDER] = draw_slider;
 	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
+	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
 	ui->draw[AVTKA_DRAW_JOG_WHEEL] = draw_jog_wheel;
+	ui->draw[AVTKA_DRAW_LED_STRIP] = draw_led_strip;
+	ui->draw[AVTKA_DRAW_SLIDER] = draw_slider;
 
 	/* item 0 is used as "no item", so start from 1 */
 	ui->item_count = 1;

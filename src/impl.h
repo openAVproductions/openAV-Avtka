@@ -20,10 +20,11 @@ struct avtka_item_t {
 typedef void (*avtka_draw)(struct avtka_t *, struct avtka_item_t *,
 			   void *cairo);
 
+void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c);
+void draw_led_strip(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
-void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo);
 
 int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 			     uint32_t x, uint32_t y);
