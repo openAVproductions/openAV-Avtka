@@ -110,6 +110,11 @@ on_display(PuglView* view)
 struct avtka_t *
 avtka_create(const char *window_name, struct avtka_opts_t *opts)
 {
+	if(opts->w == 0 || opts->h == 0) {
+		printf("AVTKA ERROR: W or H of window is ZERO. Failing\n");
+		return 0;
+	}
+
 	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
 	if(!ui)
 		return 0;
