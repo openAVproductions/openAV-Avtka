@@ -36,7 +36,6 @@ void iterate_basic(benchmark::State& state)
 	};
 	snprintf(item.name, sizeof(item.name), "item");
 
-#warning > 1000 items causes segfault in puglDestroy - investigate
 	for(int i = 0; i < state.range(0); i++) {
 		item.draw = state.range(1);
 		item.x = rand() % 360;
