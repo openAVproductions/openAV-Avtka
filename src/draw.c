@@ -167,7 +167,12 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_stroke(cr);
 
 	cairo_move_to( cr, x_, y_);
+#if 1
+	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
+#else
 	cairo_set_source_rgba(cr, 0., 0.51, 1, 0.8);
+#endif
+
 	cairo_new_sub_path( cr );
 	/* Crude NaN detection - cairo assert trips if it gets a NaN in arc() */
 	if(value != value) {
@@ -214,7 +219,11 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const float pi_4 = (3.15*2)/4;
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, -pi_4*1.5 + v, -pi_4 + v);
 	cairo_line_to( cr, x_ + (w_/2), y_ + (h_/2));
+#if 1
+	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
+#else
 	cairo_set_source_rgba(cr, 0., 0.51, 1, 0.8);
+#endif
 	cairo_set_line_width(cr, w_ / 7.5f);
 	cairo_stroke(cr);
 

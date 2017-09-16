@@ -105,7 +105,27 @@ on_display(PuglView* view)
 		}
 	}
 
-	cairo_identity_matrix (cr);
+	cairo_identity_matrix(cr);
+}
+
+static void
+avtka_colours_init(struct avtka_t *avtka)
+{
+	static uint32_t defaults[] = {
+		0xff515151, /* BG */
+		0xcc0082ff, /* PRI1 */
+	};
+#define NUM_DEF_COLS (sizeof(defaults) / sizeof(defaults[0]))
+
+	for(int i = 0; i < NUM_DEF_COLS; i++) {
+		float a = ((defaults[i]           ) >> 24) / 255.f;
+		float r = ((defaults[i] & 0xff0000) >> 16) / 255.f;
+		float g = ((defaults[i] & 0x00ff00) >>  8) / 255.f;
+		float b = ((defaults[i] & 0x0000ff) >>  0) / 255.f;
+		/* pre-compute pattern_t, save into internal LUT */
+		/* TODO: how to handle alpha? */
+		avtka->cols[(i*3)+1] = cairo_pattern_create_rgba(r, g, b, a);
+	}
 }
 
 struct avtka_t *
@@ -165,6 +185,8 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	ui->item_count = 1;
 	/* default drag sensitivity: 150px native size UI from 0 to 1 */
 	ui->drag_sensitivity = 150.f;
+
+	avtka_colours_init(ui);
 
 	return ui;
 fail:

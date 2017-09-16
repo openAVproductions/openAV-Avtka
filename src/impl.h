@@ -72,7 +72,28 @@ struct avtka_t {
 	uint32_t clicked_item;
 	int32_t clicked_x;
 	int32_t clicked_y;
+
+	/* lookup table of cairo_pattern_t pointers for colours */
+	void *cols[UINT8_MAX];
 };
 
 
 uint32_t avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y);
+
+
+/** Colour Set for lookup table
+ * This idea is sneaky - it allows setting a colour, and the dark/light
+ * variants are calculated based on some HSV magic. This allows toolkits
+ * to not have to specify details - just primary and secondary colours.
+ * Variations are pre-computed at load-time, and used via the Colours
+ * defines as normal.
+ */
+enum AVTKA_COLOURS {
+	AVTKA_COL_BG_D,
+	AVTKA_COL_BG,
+	AVTKA_COL_BG_L,
+
+	AVTKA_COL_PRI1_D,
+	AVTKA_COL_PRI1,
+	AVTKA_COL_PRI1_L,
+};
