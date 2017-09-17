@@ -56,8 +56,8 @@ struct avtka_item_opts_t {
 	uint16_t x, y, w, h;
 	uint8_t draw;
 	uint8_t interact;
+	uint8_t colour;
 	uint8_t params[4];
-	uint8_t colour_id;
 	uint8_t padding;
 	char name[ITEM_NAME_MAX];
 };
@@ -71,6 +71,9 @@ void avtka_redraw(struct avtka_t *a);
 void avtka_iterate(struct avtka_t *a);
 /* Run unit a quit command is issued by the user */
 void avtka_run(struct avtka_t *a);
+/* Register a colour to be used by items */
+uint8_t avtka_register_colour(struct avtka_t *avtka,
+			      float r, float g, float b, float a);
 
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
@@ -82,6 +85,8 @@ void avtka_item_visible_set(struct avtka_t *a,
 /* Set value of the item */
 void avtka_item_value(struct avtka_t *a, uint32_t item, float value);
 void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value);
+/* Set the primary for the item */
+void avtka_item_colour(struct avtka_t *a, uint32_t item, uint8_t col);
 
 /* Create/destroy an item */
 uint32_t avtka_item_create(struct avtka_t *a, struct avtka_item_opts_t *o);

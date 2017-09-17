@@ -48,7 +48,7 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t y_ = item->opts.y;
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
-	const uint8_t c = item->value > 0.5 ? AVTKA_COL_PRI1 : AVTKA_COL_BG;
+	const uint8_t c = item->value > 0.5 ? item->opts.colour : AVTKA_COL_BG;
 	const uint8_t off = (c == AVTKA_COL_BG);
 
 	cairo_rectangle(cr, x_, y_, w_, h_);

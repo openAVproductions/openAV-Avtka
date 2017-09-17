@@ -74,6 +74,7 @@ struct avtka_t {
 	int32_t clicked_y;
 
 	/* lookup table of cairo_pattern_t pointers for colours */
+	uint16_t cols_used;
 	void *cols[UINT8_MAX];
 };
 

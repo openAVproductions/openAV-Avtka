@@ -108,28 +108,41 @@ on_display(PuglView* view)
 	cairo_identity_matrix(cr);
 }
 
+uint8_t
+avtka_register_colour(struct avtka_t *avtka,
+		      float r, float g, float b, float a)
+{
+	/* pre-compute pattern_t, save into internal LUT. See
+	 * AVTKA_COLOURS enum in impl.h */
+	float o = 0.2;
+	uint8_t i = avtka->cols_used++;
+	avtka->cols[(i*4)+0] = cairo_pattern_create_rgba(r-o, g-o, b-o, a);
+	avtka->cols[(i*4)+1] = cairo_pattern_create_rgba(r, g, b, a);
+	avtka->cols[(i*4)+2] = cairo_pattern_create_rgba(r+o, g+o, b+o, a);
+	avtka->cols[(i*4)+3] = cairo_pattern_create_rgba(r, g, b, 0.2);
+	uint8_t col = (i * 4) + 1;
+	return col;
+}
+
 static void
 avtka_colours_init(struct avtka_t *avtka)
 {
 	static uint32_t defaults[] = {
 		0xff515151, /* BG */
 		0xcc0082ff, /* PRI1 */
+		0xffff0000, /* RED */
 	};
 #define NUM_DEF_COLS (sizeof(defaults) / sizeof(defaults[0]))
 
-	for(int i = 0; i < NUM_DEF_COLS; i++) {
+	int i;
+	for(i = 0; i < NUM_DEF_COLS; i++) {
 		float a = ((defaults[i]           ) >> 24) / 255.f;
 		float r = ((defaults[i] & 0xff0000) >> 16) / 255.f;
 		float g = ((defaults[i] & 0x00ff00) >>  8) / 255.f;
 		float b = ((defaults[i] & 0x0000ff) >>  0) / 255.f;
-		/* pre-compute pattern_t, save into internal LUT. See
-		 * AVTKA_COLOURS enum in impl.h */
-		float o = 0.2;
-		avtka->cols[(i*4)+0] = cairo_pattern_create_rgba(r-o, g-o, b-o, a);
-		avtka->cols[(i*4)+1] = cairo_pattern_create_rgba(r, g, b, a);
-		avtka->cols[(i*4)+2] = cairo_pattern_create_rgba(r+o, g+o, b+o, a);
-		avtka->cols[(i*4)+3] = cairo_pattern_create_rgba(r, g, b, 0.2);
+		avtka_register_colour(avtka, r, g, b, a);
 	}
+	avtka->cols_used = i;
 }
 
 struct avtka_t *

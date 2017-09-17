@@ -8,6 +8,7 @@ uint32_t
 avtka_item_create(struct avtka_t *ui, struct avtka_item_opts_t *o)
 {
 	ui->items[ui->item_count].opts = *o;
+	ui->items[ui->item_count].opts.colour = AVTKA_COL_PRI1;
 	return ui->item_count++;
 }
 
@@ -27,6 +28,12 @@ avtka_item_contact(struct avtka_t *a, uint32_t x, uint32_t y)
 	return 0;
 }
 
+void avtka_item_colour(struct avtka_t *a, uint32_t item, uint8_t col)
+{
+	struct avtka_item_t *it = &a->items[item];
+	it->opts.colour = col;
+}
+
 void avtka_item_value(struct avtka_t *a, uint32_t item, float value)
 {
 	struct avtka_item_t *it = &a->items[item];
@@ -41,6 +48,7 @@ void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value)
 
 int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)
 {
+	/* de-register colour? */
 	return 0;
 }
 
