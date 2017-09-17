@@ -122,9 +122,10 @@ avtka_colours_init(struct avtka_t *avtka)
 		float r = ((defaults[i] & 0xff0000) >> 16) / 255.f;
 		float g = ((defaults[i] & 0x00ff00) >>  8) / 255.f;
 		float b = ((defaults[i] & 0x0000ff) >>  0) / 255.f;
-		/* pre-compute pattern_t, save into internal LUT */
-		/* TODO: how to handle alpha? */
-		avtka->cols[(i*3)+1] = cairo_pattern_create_rgba(r, g, b, a);
+		/* pre-compute pattern_t, save into internal LUT. See
+		 * AVTKA_COLOURS enum in impl.h */
+		avtka->cols[(i*4)+1] = cairo_pattern_create_rgba(r, g, b, a);
+		avtka->cols[(i*4)+3] = cairo_pattern_create_rgba(r, g, b, 0.2);
 	}
 }
 

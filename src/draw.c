@@ -54,14 +54,15 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t y_ = item->opts.y;
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
-	const struct col_t* c = item->value > 0.5 ? fg : bg;
+	const uint8_t c = item->value > 0.5 ? AVTKA_COL_PRI1 : AVTKA_COL_BG;
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
-	draw_set_col(cr, c, TRANS);
+	/* +2 moves from PRI1 to PRI1_T, adding transparency */
+	cairo_set_source(cr, a->cols[c+2]);
 	cairo_fill_preserve(cr);
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
-	draw_set_col(cr, c, FILL);
+	cairo_set_source(cr, a->cols[c]);
 	cairo_stroke(cr);
 
 	float label_visible = 1;
