@@ -129,7 +129,8 @@ avtka_colours_init(struct avtka_t *avtka)
 {
 	static uint32_t defaults[] = {
 		0xff515151, /* BG */
-		0xcc0082ff, /* PRI1 */
+		//0xcc0082ff, /* PRI1 */
+		0xefffffff, /* PRI1 - white */
 		0xffff0000, /* RED */
 	};
 #define NUM_DEF_COLS (sizeof(defaults) / sizeof(defaults[0]))
