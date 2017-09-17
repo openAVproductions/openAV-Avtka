@@ -29,12 +29,6 @@ enum COLOURS {
 };
 
 static inline void
-draw_set_col(cairo_t *cr, const struct col_t *c, float a)
-{
-	cairo_set_source_rgba(cr, c->r, c->g, c->b, a);
-}
-
-static inline void
 draw_label(cairo_t *cr, const char *label,
 	   int32_t x_, int32_t y_,
 	   int32_t w_, int32_t h_)
@@ -55,14 +49,15 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
 	const uint8_t c = item->value > 0.5 ? AVTKA_COL_PRI1 : AVTKA_COL_BG;
+	const uint8_t off = (c == AVTKA_COL_BG);
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
 	/* +2 moves from PRI1 to PRI1_T, adding transparency */
 	cairo_set_source(cr, a->cols[c+2]);
 	cairo_fill_preserve(cr);
 
-	cairo_rectangle(cr, x_, y_, w_, h_);
-	cairo_set_source(cr, a->cols[c]);
+	//cairo_rectangle(cr, x_, y_, w_, h_);
+	cairo_set_source(cr, a->cols[c+off]);
 	cairo_stroke(cr);
 
 	float label_visible = 1;
@@ -81,7 +76,7 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const int32_t h_ = item->opts.h;
 
 	cairo_rectangle( cr, x_, y_, w_, h_);
-	cairo_set_source_rgba(cr, 0.4, 0.4, 0.4, 1);
+	cairo_set_source(cr, a->cols[AVTKA_COL_BG_L]);
 	cairo_stroke(cr);
 
 	const int32_t sh = 20;
@@ -97,9 +92,9 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 		cairo_rectangle( cr, dx, y_ + 1, sh, h_ - 2);
 	}
 
-	cairo_set_source_rgba(cr, 0.0, 0.5, 1, 0.3);
+	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1_T]);
 	cairo_fill_preserve(cr);
-	cairo_set_source_rgba(cr, 0.0, 0.5, 1, 1);
+	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
 	cairo_stroke(cr);
 
 	float label_visible = 1;
@@ -162,18 +157,13 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	float value = item->value;
 	float label_visible = 1;
 
-	cairo_set_source_rgba(cr, 0.8, 0.8, 0.8, 1.0);
+	cairo_set_source(cr, a->cols[AVTKA_COL_BG_L]);
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, 2.46, 2.46 + 4.54 * 1);
 	cairo_set_line_width(cr, w_ / 20.f);
 	cairo_stroke(cr);
 
 	cairo_move_to( cr, x_, y_);
-#if 1
 	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
-#else
-	cairo_set_source_rgba(cr, 0., 0.51, 1, 0.8);
-#endif
-
 	cairo_new_sub_path( cr );
 	/* Crude NaN detection - cairo assert trips if it gets a NaN in arc() */
 	if(value != value) {
@@ -208,7 +198,7 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_stroke(cr);
 #endif
 
-	cairo_set_source_rgba(cr, 0.8, 0.8, 0.8, 1.0);
+	cairo_set_source(cr, a->cols[AVTKA_COL_BG_L]);
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, 0, 6.3);
 	cairo_set_line_width(cr, w_ / 20.f);
 	cairo_stroke(cr);
@@ -220,11 +210,7 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const float pi_4 = (3.15*2)/4;
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, -pi_4*1.5 + v, -pi_4 + v);
 	cairo_line_to( cr, x_ + (w_/2), y_ + (h_/2));
-#if 1
 	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
-#else
-	cairo_set_source_rgba(cr, 0., 0.51, 1, 0.8);
-#endif
 	cairo_set_line_width(cr, w_ / 7.5f);
 	cairo_stroke(cr);
 
