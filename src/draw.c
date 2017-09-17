@@ -92,9 +92,9 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 		cairo_rectangle( cr, dx, y_ + 1, sh, h_ - 2);
 	}
 
-	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1_T]);
+	cairo_set_source(cr, a->cols[item->opts.colour+2]);
 	cairo_fill_preserve(cr);
-	cairo_set_source(cr, a->cols[AVTKA_COL_PRI1]);
+	cairo_set_source(cr, a->cols[item->opts.colour]);
 	cairo_stroke(cr);
 
 	float label_visible = 1;

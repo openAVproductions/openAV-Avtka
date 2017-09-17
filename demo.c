@@ -18,6 +18,8 @@ enum ITEMS {
 
 struct demo_t {
 	uint32_t items[ITEM_COUNT];
+	uint8_t cols[2];
+	uint8_t col_counter;
 };
 
 void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
@@ -25,8 +27,10 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 	struct demo_t *demo = userdata;
 	printf("event on item %d, value %f\n", item, v);
 	if(item == demo->items[ITEM_BUTTON] && v > 0.5) {
+		demo->col_counter++;
 		for(int i = 0; i < ITEM_COUNT; i++) {
-			avtka_item_colour(avtka, demo->items[i], 9);
+			avtka_item_colour(avtka, demo->items[i],
+					  demo->cols[demo->col_counter % 2]);
 		}
 	}
 }
@@ -34,6 +38,8 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 int main()
 {
 	struct demo_t demo = {0};
+	demo.cols[0] = 5;
+	demo.cols[1] = 9;
 
 	struct avtka_opts_t opts = {
 		.w = 360,
