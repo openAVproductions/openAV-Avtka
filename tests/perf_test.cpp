@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "benchmark/benchmark.h"
 
-#include <avtka/avtka.h>
+#include "avtka.h"
 
 static void
 event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
