@@ -21,12 +21,16 @@ pkg.generate(name: 'openav_avtka',
               requires: ['cairo', 'x11', 'gl'],
               libraries: avtka)
 
+# dep to make it easy to use Avtka as a Meson subproject
+avtka_dep = declare_dependency(
+  include_directories : 'include',
+  link_with : avtka)
+
 avtka_demo = files('demo.c')
 
 executable('avtka_demo', avtka_demo,
             include_directories: avtka_includes,
             link_with: avtka)
-
 
 bench = dependency('benchmark', required: false)
 if bench.found()
