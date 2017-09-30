@@ -23,7 +23,7 @@ pkg.generate(name: 'openav_avtka',
 
 # dep to make it easy to use Avtka as a Meson subproject
 avtka_dep = declare_dependency(
-  include_directories : 'include',
+  include_directories : avtka_includes,
   link_with : avtka)
 
 avtka_demo = files('demo.c')
