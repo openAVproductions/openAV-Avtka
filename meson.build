@@ -21,26 +21,33 @@ pkg.generate(name: 'openav_avtka',
               requires: ['cairo', 'x11', 'gl'],
               libraries: avtka)
 
-# dep to make it easy to use Avtka as a Meson subproject
-avtka_dep = declare_dependency(
-  include_directories : avtka_includes,
-  link_with : avtka)
 
-avtka_demo = files('demo.c')
+if meson.is_subproject()
+  # dep to make it easy to use Avtka as a Meson subproject
+  avtka_dep = declare_dependency(
+    include_directories : avtka_includes,
+    link_with : avtka)
+else
+  # compile the demo project
+  avtka_demo = files('demo.c')
+  executable('avtka_demo', avtka_demo,
+              include_directories: avtka_includes,
+              link_with: avtka)
 
-executable('avtka_demo', avtka_demo,
-            include_directories: avtka_includes,
-            link_with: avtka)
-
-bench = dependency('benchmark', required: false)
-if bench.found()
+  # grab test files
   subdir('tests')
-  threads = dependency('threads')
-  tests = executable('avtka_tests',test_files,
-                      link_with: avtka,
-                      dependencies: [bench, threads])
-  #test('Performance Tests', tests)
 
+  # compile benchmarks
+  bench = dependency('benchmark', required: false)
+  if bench.found()
+    threads = dependency('threads')
+    tests = executable('avtka_tests',test_files,
+                        link_with: avtka,
+                        dependencies: [bench, threads])
+    #test('Performance Tests', tests)
+  endif
+
+  # compile tests
   test_create = executable('test_create', test_create, link_with: avtka)
   test('Create', test_create)
   test('Create Envvar', test_create, env : ['AVTKA_DEBUG=3'])
