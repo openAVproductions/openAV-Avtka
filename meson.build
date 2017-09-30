@@ -10,7 +10,9 @@ cpp = meson.get_compiler('cpp')
 
 subdir('src')
 
-install_headers(avtka_hdr, subdir: 'avtka')
+install_headers('include/avtka.h')
+
+avtka_includes = include_directories('include')
 
 pkg = import('pkgconfig')
 pkg.generate(name: 'openav_avtka',
@@ -19,8 +21,6 @@ pkg.generate(name: 'openav_avtka',
               requires: ['cairo', 'x11', 'gl'],
               libraries: avtka)
 
-avtka_includes = include_directories('src')
-
 avtka_demo = files('demo.c')
 
 executable('avtka_demo', avtka_demo,
@@ -28,19 +28,15 @@ executable('avtka_demo', avtka_demo,
             link_with: avtka)
 
 
-subdir('tests')
-
-bench = dependency('benchmark')
-threads = dependency('threads')
-
-tests = executable('avtka_tests',
-                    test_files,
-                    link_with: avtka,
-                    dependencies: [bench, threads])
+#
+#subdir('tests')
+#bench = dependency('benchmark')
+#threads = dependency('threads')
+#tests = executable('avtka_tests', test_files, link_with: avtka, dependencies: [bench, threads])
 #test('Performance Tests', tests)
 
-test_create = executable('test_create',
-                    test_create,
-                    link_with: avtka)
-test('Create', test_create)
-test('Create Envvar', test_create, env : ['AVTKA_DEBUG=3'])
+#test_create = executable('test_create',
+#                    test_create,
+#                    link_with: avtka)
+#test('Create', test_create)
+#test('Create Envvar', test_create, env : ['AVTKA_DEBUG=3'])

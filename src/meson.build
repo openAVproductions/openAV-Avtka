@@ -1,4 +1,3 @@
-avtka_hdr = files('avtka.h')
 avtka_src = files('avtka.c', 'item.c', 'draw.c', 'interact.c')
 avtka_src += files('pugl/pugl_x11.c')
 

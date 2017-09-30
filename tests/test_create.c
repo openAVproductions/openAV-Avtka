@@ -1,4 +1,4 @@
-#include <avtka/avtka.h>
+#include "avtka.h"
 
 #define CHECK_EQUALS(x, y) do { if(x != y) return -1; } while (0)
 
