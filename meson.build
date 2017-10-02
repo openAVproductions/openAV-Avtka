@@ -3,6 +3,7 @@ project('openav_avtka', ['c','cpp'])
 conf_data = configuration_data()
 conf_data.set('version', '0.1')
 
+add_project_arguments('-std=c99', language : 'c')
 add_project_arguments('-std=c++11', language : 'cpp')
 
 cc  = meson.get_compiler('c')
