@@ -40,6 +40,11 @@ void avtka_item_value(struct avtka_t *a, uint32_t item, float value)
 	it->value = value;
 }
 
+void avtka_item_colour32(struct avtka_t *a, uint32_t item, uint32_t col)
+{
+	a->items[item].col = col;
+}
+
 void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value)
 {
 	struct avtka_item_t *it = &a->items[item];

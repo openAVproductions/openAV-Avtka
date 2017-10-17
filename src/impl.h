@@ -29,6 +29,7 @@ struct avtka_item_t {
 	struct avtka_item_opts_t opts;
 	/* private state of widget */
 	float value;
+	uint32_t col;
 };
 
 /* draw function callback */

@@ -41,6 +41,16 @@ draw_label(cairo_t *cr, const char *label,
 	cairo_stroke(cr);
 }
 
+static inline void
+set_col(cairo_t *cr, uint32_t c, float a)
+{
+	cairo_set_source_rgba(cr,
+			 ((c & 0x00ff0000) >> 16)/ 255.f,
+			 ((c & 0x0000ff00) >>  8) / 255.f,
+			 ((c & 0x000000ff)      )/ 255.f,
+			 a);
+}
+
 void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 {
 	cairo_t* cr = cairo;
@@ -48,16 +58,12 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t y_ = item->opts.y;
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
-	const uint8_t c = item->value > 0.5 ? item->opts.colour : AVTKA_COL_BG;
-	const uint8_t off = (c == AVTKA_COL_BG);
 
 	cairo_rectangle(cr, x_, y_, w_, h_);
-	/* +2 moves from PRI1 to PRI1_T, adding transparency */
-	cairo_set_source(cr, a->cols[c+2]);
+	set_col(cr, item->col, TRANS);
 	cairo_fill_preserve(cr);
 
-	//cairo_rectangle(cr, x_, y_, w_, h_);
-	cairo_set_source(cr, a->cols[c+off]);
+	set_col(cr, item->col, FILL);
 	cairo_stroke(cr);
 
 	float label_visible = 1;
