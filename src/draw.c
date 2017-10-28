@@ -155,7 +155,6 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const int32_t h_ = item->opts.h;
 
 	float value = item->value;
-	float label_visible = 1;
 
 	cairo_set_source(cr, a->cols[AVTKA_COL_BG_L]);
 	cairo_arc(cr, x_+w_/2,y_+h_/2,  w_/2.f - 8, 2.46, 2.46 + 4.54 * 1);
