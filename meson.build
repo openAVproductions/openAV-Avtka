@@ -28,12 +28,17 @@ foreach file : src_files
   avtka_src += join_paths('src', file)
 endforeach
 
+install = true
+if meson.is_subproject()
+  install = false
+endif
+
 avtka = static_library('avtka',
     [avtka_src],
     c_args: ['-DPUGL_HAVE_CAIRO',
              '-DPUGL_HAVE_GL',
              '-Isrc/pugl/'],
-    install : true,
+    install : install,
     include_directories: avtka_includes,
     dependencies: deps)
 
