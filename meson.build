@@ -42,21 +42,22 @@ avtka = static_library('avtka',
     include_directories: avtka_includes,
     dependencies: deps)
 
-install_headers('include/avtka.h')
-
-pkg = import('pkgconfig')
-pkg.generate(name: 'openav_avtka',
-              description: 'OpenAV Avtka Library',
-              version: conf_data.get('version'),
-              requires: dep_names,
-              libraries: avtka)
-
 if meson.is_subproject()
   # dep to make it easy to use Avtka as a Meson subproject
   avtka_dep = declare_dependency(
       include_directories : avtka_includes,
       link_with : avtka)
 else
+  # standalone install
+  install_headers('include/avtka.h')
+
+  pkg = import('pkgconfig')
+  pkg.generate(name: 'openav_avtka',
+                description: 'OpenAV Avtka Library',
+                version: conf_data.get('version'),
+                requires: dep_names,
+                libraries: avtka)
+
   # compile the demo project
   avtka_demo = files('demo.c')
   executable('avtka_demo', avtka_demo,
