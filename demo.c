@@ -26,6 +26,9 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 {
 	struct demo_t *demo = userdata;
 	printf("event on item %d, value %f\n", item, v);
+
+	avtka_item_value(avtka, item, v);
+
 	if(item == demo->items[ITEM_BUTTON] && v > 0.5) {
 		demo->col_counter++;
 		for(int i = 0; i < ITEM_COUNT; i++) {

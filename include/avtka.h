@@ -58,7 +58,9 @@ struct avtka_item_opts_t {
 	uint8_t interact;
 	uint8_t colour;
 	uint8_t params[4];
-	uint8_t padding;
+	/* bitset of options */
+	uint8_t show_label   : 1;
+	uint8_t flags_unused : 7;
 	char name[ITEM_NAME_MAX];
 };
 
@@ -78,10 +80,8 @@ uint8_t avtka_register_colour(struct avtka_t *avtka,
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
 
-/* Set visibility of the item */
-void avtka_item_visible_set(struct avtka_t *a,
-			    uint32_t item,
-			    uint32_t visible);
+/* Set visibility of the text label */
+void avtka_item_label_show(struct avtka_t *a, uint32_t item, uint32_t show);
 /* Set value of the item */
 void avtka_item_value(struct avtka_t *a, uint32_t item, float value);
 void avtka_item_colour32(struct avtka_t *a, uint32_t item, uint32_t col);
