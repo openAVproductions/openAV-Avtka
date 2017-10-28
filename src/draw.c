@@ -66,10 +66,8 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	set_col(cr, item->col, FILL);
 	cairo_stroke(cr);
 
-	float label_visible = 1;
-	if(label_visible) {
+	if(item->opts.show_label)
 		draw_label(cr, item->opts.name, x_, y_, w_, h_);
-	}
 	cairo_stroke(cr);
 }
 
@@ -103,10 +101,8 @@ void draw_slider(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_set_source(cr, a->cols[item->opts.colour]);
 	cairo_stroke(cr);
 
-	float label_visible = 1;
-	if(label_visible) {
+	if(item->opts.show_label)
 		draw_label(cr, item->opts.name, x_, y_, w_, h_);
-	}
 }
 
 void draw_led_strip(struct avtka_t *a, struct avtka_item_t *item, void* c)
@@ -146,10 +142,8 @@ void draw_led_strip(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	}
 	cairo_stroke(cr);
 
-	float label_visible = 1;
-	if(label_visible) {
+	if(item->opts.show_label)
 		draw_label(cr, item->opts.name, x_, y_, w_, h_);
-	}
 }
 
 void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
@@ -180,9 +174,8 @@ void draw_dial(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_set_line_width(cr, w_ / 7.f);
 	cairo_stroke(cr);
 
-	if(label_visible) {
+	if(item->opts.show_label)
 		draw_label(cr, item->opts.name, x_, y_, w_, h_);
-	}
 	cairo_stroke(cr);
 }
 
@@ -196,7 +189,6 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const int32_t h_ = item->opts.h;
 
 	float value = item->value;
-	float label_visible = 1;
 
 #if 0
 	cairo_rectangle(cr, x_, y_, w_, h_);
@@ -229,9 +221,7 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	cairo_line_to( cr, x_ + (w_/2), y_ + (h_/2));
 	cairo_stroke(cr);
 
-	if(label_visible) {
+	if(item->opts.show_label)
 		draw_label(cr, item->opts.name, x_, y_, w_, h_);
-	}
-
 }
 
