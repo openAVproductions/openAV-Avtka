@@ -80,6 +80,23 @@ uint8_t avtka_register_colour(struct avtka_t *avtka,
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
 
+struct avtka_screen_opts_t {
+	uint16_t x, y, w, h;
+	uint16_t px_x, px_y;
+	/* single bit per pixel; on off only */
+	uint32_t flags_1bit : 1;
+	/* rgb capable screen */
+	uint32_t flags_rgb  : 1;
+};
+
+/* allocate a new screen in the UI.
+ * Returns 0 or a positive number as the screen-id on success.
+ * Returns -1 on invalid screen_opts, or  failure to allocate memory
+ */
+int32_t
+avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *opts);
+uint8_t *avtka_screen_get_data_ptr(struct avtka_t *a, uint16_t screen_id);
+
 /* Set visibility of the text label */
 void avtka_item_label_show(struct avtka_t *a, uint32_t item, uint32_t show);
 /* Set value of the item */
