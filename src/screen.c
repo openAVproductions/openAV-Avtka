@@ -34,7 +34,6 @@ avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 
 	a->screen_count++;
 
-
 	return screen_id;
 }
 
