@@ -95,6 +95,25 @@ on_display(PuglView* view)
 	cairo_rectangle(cr, 0, 0, a->opts.w, a->opts.h);
 	cairo_fill(cr);
 
+	/* paint screens to the UI */
+	for (int i = 0; i < a->screen_count; i++) {
+		cairo_surface_t *s = a->screen_surfaces[i];
+		int x = a->screen_opts[i].x;
+		int y = a->screen_opts[i].y;
+#if 0
+		cairo_t *scr = cairo_create(s);
+		cairo_set_source_rgba(scr, 1, 1, 1, 1);
+		cairo_rectangle(scr, 0,0, 128, 64);
+		cairo_stroke(scr);
+		cairo_surface_flush(s);
+		cairo_destroy(scr);
+#endif
+
+		cairo_surface_flush(s);
+		cairo_set_source_surface(cr, s, x, y);
+		cairo_paint(cr);
+	}
+
 	/* iterate all items, calling "draw" on them */
 	for (int i = 0; i < a->item_count; i++) {
 		uint8_t draw_id = a->items[i].opts.draw;

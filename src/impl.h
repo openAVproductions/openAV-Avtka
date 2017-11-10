@@ -23,6 +23,7 @@
 
 #define AVTKA_MAX_ITEMS 1024
 #define AVTKA_MAX_DRAW 8
+#define AVTKA_MAX_SCREENS 2
 
 struct avtka_item_t {
 	/* public state of widget */
@@ -49,7 +50,6 @@ int32_t avtka_interact_release(struct avtka_t *a, uint32_t item,
 int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 			      int32_t x, int32_t y);
 
-
 struct avtka_t {
 	struct avtka_opts_t opts;
 
@@ -65,6 +65,11 @@ struct avtka_t {
 	/* all items in the UI */
 	uint32_t item_count;
 	struct avtka_item_t items[AVTKA_MAX_ITEMS];
+
+	/* virtual screen surfaces */
+	uint16_t screen_count;
+	void *screen_surfaces[AVTKA_MAX_SCREENS];
+	struct avtka_screen_opts_t screen_opts[AVTKA_MAX_SCREENS];
 
 	/* array of draw routines */
 	avtka_draw draw[AVTKA_MAX_DRAW];

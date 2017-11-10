@@ -21,7 +21,7 @@ avtka_includes += include_directories('include')
 avtka_includes += include_directories('src')
 avtka_src = []
 
-src_files  = ['avtka.c', 'item.c', 'draw.c', 'interact.c']
+src_files  = ['avtka.c', 'screen.c', 'item.c', 'draw.c', 'interact.c']
 src_files += ['pugl/pugl_x11.c']
 
 foreach file : src_files
