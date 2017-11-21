@@ -202,14 +202,18 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	PuglView *view = puglInit(NULL, NULL);
 
+	/* embed if requrested */
+	if(opts->native_parent != 0)
+		puglInitWindowParent(view, opts->native_parent);
+
 	puglInitWindowSize  (view, opts->w, opts->h);
 	puglInitResizable   (view, true );
 	puglInitContextType (view, PUGL_CAIRO | PUGL_GL);
 	puglIgnoreKeyRepeat (view, true );
-	puglSetEventFunc    (view, on_event  );
-	puglCreateWindow    (view, window_name );
-	puglSetHandle       (view, ui);
+	puglSetEventFunc    (view, on_event);
+	puglCreateWindow    (view, window_name);
 	puglShowWindow      (view);
+	puglSetHandle       (view, ui);
 	ui->pugl = view;
 
 	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
@@ -231,6 +235,13 @@ fail:
 	if(ui)
 		free(ui);
 	return 0;
+}
+
+
+avtka_native_t
+avtka_get_native_handle(struct avtka_t *a)
+{
+	return puglGetNativeWindow(a->pugl);
 }
 
 void
