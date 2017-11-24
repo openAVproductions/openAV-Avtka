@@ -1,6 +1,7 @@
 /* This file is part of AVTKA by OpenAV */
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -12,6 +13,7 @@ enum ITEMS {
 	ITEM_SLIDER_H,
 	ITEM_BUTTON,
 	ITEM_JOG_WHEEL,
+	ITEM_FILTER,
 
 	ITEM_COUNT,
 };
@@ -36,11 +38,18 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 					  demo->cols[demo->col_counter % 2]);
 		}
 	}
+
+	if(item == demo->items[ITEM_FILTER] ||
+	   item == demo->items[ITEM_SLIDER_V]) {
+		avtka_item_value(avtka, demo->items[ITEM_SLIDER_V], v);
+		avtka_item_value(avtka, demo->items[ITEM_FILTER], v);
+	}
 }
 
 int main()
 {
-	struct demo_t demo = {0};
+	struct demo_t demo;
+	memset(&demo, 0, sizeof(struct demo_t));
 	demo.cols[0] = 5;
 	demo.cols[1] = 9;
 
@@ -95,6 +104,15 @@ int main()
 	item.interact = AVTKA_INTERACT_DRAG_DELTA_V;
 	snprintf(item.name, sizeof(item.name), "Jog Wheel");
 	demo.items[ITEM_JOG_WHEEL] = avtka_item_create(a, &item);
+
+	item.x =  80;
+	item.y = 160;
+	item.w = 100;
+	item.h =  80;
+	item.draw = AVTKA_DRAW_FILTER;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "Filter");
+	demo.items[ITEM_FILTER] = avtka_item_create(a, &item);
 
 	avtka_run(a);
 
