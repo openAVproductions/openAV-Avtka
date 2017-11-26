@@ -119,8 +119,9 @@ int main()
 
 	item.x = 20;
 	item.y = 130;
-	item.w = 12;
+	item.w = 42;
 	item.h = 16;
+	item.params[0] = 3;
 	item.draw = AVTKA_DRAW_7_SEG;
 	item.interact = AVTKA_INTERACT_DRAG_V;
 	snprintf(item.name, sizeof(item.name), "7 Seg");

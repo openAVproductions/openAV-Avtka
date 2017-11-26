@@ -3,99 +3,116 @@
 void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 {
 	cairo_t* cr = cairo;
-	const int32_t x_ = item->opts.x;
-	const int32_t y_ = item->opts.y;
-	const int32_t w_ = item->opts.w;
-	const int32_t h_ = item->opts.h;
+	const int32_t x = item->opts.x;
+	const int32_t y = item->opts.y;
+	const int32_t w = item->opts.w;
+	const int32_t h = item->opts.h;
 
-	float value = item->value;
+	const float value = item->value;
+	const uint8_t nseg = item->opts.params[0] < 3 ?
+				item->opts.params[0] : 3;
+
+	cairo_rectangle( cr, x, y, w, h);
+	cairo_clip( cr );
+
+	uint8_t digits[8] = {1};
 	/* cast down to a single int */
-	int digit = (int)(value * 9.9950f);
+	digits[0] = ((int)(value * 9.50f)) % 10;
+	digits[1] = ((int)(value * 99.950f)) % 10;
+	digits[2] = ((int)(value * 999.50f)) % 10;
+
+
+	printf(" %d %d %d\n", digits[2], digits[1], digits[0]);
+
 	/* dot if literally 1.0f was supplied */
 	int dot = (value >= 0.9950f);
 
-	cairo_rectangle( cr, x_, y_, w_, h_);
-	cairo_clip( cr );
+	for(int i = 0; i < nseg; i++) {
+		const uint8_t digit = digits[i];
+		const int32_t w_ = (w / nseg) - 4;
+		const int32_t x_ = 1 + x + ((w_+4)*i);
+		const int32_t y_ = y;
+		const int32_t h_ = h;
 
-	switch(digit) {
-	case 0:
-		cairo_rectangle( cr, x_, y_, w_, h_);
-		break;
-	case 1:
-		cairo_rectangle( cr, x_+w_, y_, 2, h_);
-		break;
-	case 2:
-		cairo_move_to( cr, x_     , y_);
-		cairo_line_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		cairo_line_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_     , y_ + h_);
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		break;
-	case 3:
-		cairo_move_to( cr, x_     , y_);
-		cairo_line_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		cairo_line_to( cr, x_     , y_ + h_);
+		switch(digit) {
+		case 0:
+			cairo_rectangle( cr, x_, y_, w_, h_);
+			break;
+		case 1:
+			cairo_move_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			break;
+		case 2:
+			cairo_move_to( cr, x_     , y_);
+			cairo_line_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_line_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_     , y_ + h_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			break;
+		case 3:
+			cairo_move_to( cr, x_     , y_);
+			cairo_line_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			cairo_line_to( cr, x_     , y_ + h_);
+			cairo_move_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			break;
+		case 4:
+			cairo_move_to( cr, x_     , y_);
+			cairo_line_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_move_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			break;
+		case 5:
+			cairo_move_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_     , y_);
+			cairo_line_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			cairo_line_to( cr, x_     , y_ + h_);
+			break;
+		case 6:
+			cairo_move_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_     , y_);
+			cairo_line_to( cr, x_     , y_ + h_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_line_to( cr, x_     , y_ + (h_/2));
+			break;
+		case 7:
+			cairo_move_to( cr, x_     , y_);
+			cairo_line_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			break;
+		case 8:
+			cairo_rectangle( cr, x_, y_, w_, h_);
+			cairo_move_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			break;
+		case 9:
+			cairo_move_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_);
+			cairo_line_to( cr, x_     , y_);
+			cairo_line_to( cr, x_     , y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+			cairo_line_to( cr, x_ + w_, y_ + h_);
+			cairo_line_to( cr, x_     , y_ + h_);
+			break;
+		default: break;
+		};
 
-		cairo_move_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		break;
-	case 4:
-		cairo_move_to( cr, x_     , y_);
-		cairo_line_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-
-		cairo_move_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		break;
-	case 5:
-		cairo_move_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_     , y_);
-		cairo_line_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		cairo_line_to( cr, x_     , y_ + h_);
-		break;
-	case 6:
-		cairo_move_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_     , y_);
-		cairo_line_to( cr, x_     , y_ + h_);
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		cairo_line_to( cr, x_     , y_ + (h_/2));
-		break;
-	case 7:
-		cairo_move_to( cr, x_     , y_);
-		cairo_line_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		break;
-	case 8:
-		cairo_rectangle( cr, x_, y_, w_, h_);
-		cairo_move_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		break;
-	case 9:
-		cairo_move_to( cr, x_ + w_, y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_);
-		cairo_line_to( cr, x_     , y_);
-		cairo_line_to( cr, x_     , y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
-		cairo_line_to( cr, x_ + w_, y_ + h_);
-		cairo_line_to( cr, x_     , y_ + h_);
-		break;
-	default: break;
+		set_col(cr, item->col, FILL);
+		cairo_set_line_width(cr, 3);
+		cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+		cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+		cairo_stroke(cr);
 	};
-
-	set_col(cr, item->col, FILL);
-	cairo_set_line_width(cr, 3);
-	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
-	cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
-	cairo_stroke(cr);
 
 	if(dot) {
 		set_col(cr, ~item->col, FILL);
-		cairo_rectangle(cr, x_, y_, 3, 3);
+		cairo_rectangle(cr, x, y, 3, 3);
 		cairo_stroke(cr);
 	}
 }
