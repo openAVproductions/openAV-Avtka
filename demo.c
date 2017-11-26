@@ -14,6 +14,7 @@ enum ITEMS {
 	ITEM_BUTTON,
 	ITEM_JOG_WHEEL,
 	ITEM_FILTER,
+	ITEM_7SEG,
 
 	ITEM_COUNT,
 };
@@ -30,6 +31,8 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 	printf("event on item %d, value %f\n", item, v);
 
 	avtka_item_value(avtka, item, v);
+
+	avtka_item_value(avtka, demo->items[ITEM_7SEG], v);
 
 	if(item == demo->items[ITEM_BUTTON] && v > 0.5) {
 		demo->col_counter++;
@@ -113,6 +116,15 @@ int main()
 	item.interact = AVTKA_INTERACT_DRAG_V;
 	snprintf(item.name, sizeof(item.name), "Filter");
 	demo.items[ITEM_FILTER] = avtka_item_create(a, &item);
+
+	item.x = 20;
+	item.y = 130;
+	item.w = 12;
+	item.h = 16;
+	item.draw = AVTKA_DRAW_7_SEG;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "7 Seg");
+	demo.items[ITEM_7SEG] = avtka_item_create(a, &item);
 
 	avtka_run(a);
 

@@ -1,5 +1,106 @@
 #include "draw_impl.h"
 
+void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
+{
+	cairo_t* cr = cairo;
+	const int32_t x_ = item->opts.x;
+	const int32_t y_ = item->opts.y;
+	const int32_t w_ = item->opts.w;
+	const int32_t h_ = item->opts.h;
+
+	float value = item->value;
+	/* cast down to a single int */
+	int digit = (int)(value * 9.9950f);
+	/* dot if literally 1.0f was supplied */
+	int dot = (value >= 0.9950f);
+
+	cairo_rectangle( cr, x_, y_, w_, h_);
+	cairo_clip( cr );
+
+	switch(digit) {
+	case 0:
+		cairo_rectangle( cr, x_, y_, w_, h_);
+		break;
+	case 1:
+		cairo_rectangle( cr, x_+w_, y_, 2, h_);
+		break;
+	case 2:
+		cairo_move_to( cr, x_     , y_);
+		cairo_line_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		cairo_line_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_     , y_ + h_);
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		break;
+	case 3:
+		cairo_move_to( cr, x_     , y_);
+		cairo_line_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		cairo_line_to( cr, x_     , y_ + h_);
+
+		cairo_move_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		break;
+	case 4:
+		cairo_move_to( cr, x_     , y_);
+		cairo_line_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+
+		cairo_move_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		break;
+	case 5:
+		cairo_move_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_     , y_);
+		cairo_line_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		cairo_line_to( cr, x_     , y_ + h_);
+		break;
+	case 6:
+		cairo_move_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_     , y_);
+		cairo_line_to( cr, x_     , y_ + h_);
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		cairo_line_to( cr, x_     , y_ + (h_/2));
+		break;
+	case 7:
+		cairo_move_to( cr, x_     , y_);
+		cairo_line_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		break;
+	case 8:
+		cairo_rectangle( cr, x_, y_, w_, h_);
+		cairo_move_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		break;
+	case 9:
+		cairo_move_to( cr, x_ + w_, y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_);
+		cairo_line_to( cr, x_     , y_);
+		cairo_line_to( cr, x_     , y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + (h_/2));
+		cairo_line_to( cr, x_ + w_, y_ + h_);
+		cairo_line_to( cr, x_     , y_ + h_);
+		break;
+	default: break;
+	};
+
+	set_col(cr, item->col, FILL);
+	cairo_set_line_width(cr, 3);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
+	cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+	cairo_stroke(cr);
+
+	if(dot) {
+		set_col(cr, ~item->col, FILL);
+		cairo_rectangle(cr, x_, y_, 3, 3);
+		cairo_stroke(cr);
+	}
+}
+
+
 void draw_filter(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 {
 	cairo_t* cr = cairo;

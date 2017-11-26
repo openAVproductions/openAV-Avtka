@@ -222,6 +222,7 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	ui->draw[AVTKA_DRAW_LED_STRIP] = draw_led_strip;
 	ui->draw[AVTKA_DRAW_SLIDER] = draw_slider;
 	ui->draw[AVTKA_DRAW_FILTER] = draw_filter;
+	ui->draw[AVTKA_DRAW_7_SEG] = draw_7seg;
 
 	/* item 0 is used as "no item", so start from 1 */
 	ui->item_count = 1;
