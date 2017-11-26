@@ -18,11 +18,15 @@ extern "C" {
 
 /* forward declarations */
 struct avtka_t;
+typedef intptr_t avtka_native_t;
 
 typedef void (*avtka_event_cb)(struct avtka_t *avtka, uint32_t item,
 			       float value, void *userdata);
 
 struct avtka_opts_t {
+	/* embedding */
+	avtka_native_t native_parent;
+	/* general */
 	uint32_t flags;
 	uint16_t w;
 	uint16_t h;
@@ -31,7 +35,7 @@ struct avtka_opts_t {
 	/* debug verbosity */
 	uint8_t debug_level;
 
-	uint8_t padding[39];
+	uint8_t padding[31];
 };
 
 enum AVTKA_DRAW_IDS {
@@ -77,6 +81,9 @@ void avtka_run(struct avtka_t *a);
 /* Register a colour to be used by items */
 uint8_t avtka_register_colour(struct avtka_t *avtka,
 			      float r, float g, float b, float a);
+
+/* Call this to recieve the native widget handle */
+avtka_native_t avtka_get_native_handle(struct avtka_t *avtka);
 
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
