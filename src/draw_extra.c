@@ -9,13 +9,18 @@ void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t w = item->opts.w;
 	const int32_t h = item->opts.h;
 
-	const float value = item->value;
 	const uint8_t nseg = item->opts.params[0] < 3 ?
 				item->opts.params[0] : 3;
+
+	float value = item->value;
+	if(nseg == 2)
+		value = value / 10.f;
 
 	cairo_rectangle( cr, x, y, w, h);
 	cairo_set_line_width(cr, 1.f);
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_set_source_rgba(cr, 0., 0., 0., 1.f);
+	cairo_fill_preserve(cr);
 	cairo_set_source_rgba(cr, 1,1,1, 0.8f);
 	cairo_stroke_preserve(cr);
 	cairo_clip( cr );
@@ -27,8 +32,11 @@ void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	digits[1] = ((int)(abs_val * 99.950f)) % 10;
 	digits[2] = ((int)(abs_val * 999.50f)) % 10;
 
+	int off = 0;
+	if(nseg == 1) off = 0;
+	if(nseg == 2) off = 1;
 	for(int i = 0; i < nseg; i++) {
-		const uint8_t digit = digits[i];
+		const uint8_t digit = digits[off+i];
 		const int32_t w_ = (w / nseg) - 4;
 		const int32_t x_ = 2 + x + ((w_+4)*i);
 		const int32_t y_ = y + 2;
@@ -104,7 +112,8 @@ void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 		};
 
 		set_col(cr, item->col, FILL);
-		cairo_set_line_width(cr, 2.f);
+		if(h_ > 10)
+			cairo_set_line_width(cr, 2.f);
 		cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 		cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 		cairo_stroke(cr);

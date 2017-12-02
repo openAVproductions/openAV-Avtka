@@ -15,6 +15,9 @@ enum ITEMS {
 	ITEM_JOG_WHEEL,
 	ITEM_FILTER,
 	ITEM_7SEG,
+	ITEM_7SEG_2,
+	ITEM_7SEG_1,
+	ITEM_7SEG_S,
 
 	ITEM_COUNT,
 };
@@ -33,6 +36,9 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 	avtka_item_value(avtka, item, v);
 
 	avtka_item_value(avtka, demo->items[ITEM_7SEG], v);
+	avtka_item_value(avtka, demo->items[ITEM_7SEG_2], v);
+	avtka_item_value(avtka, demo->items[ITEM_7SEG_1], v);
+	avtka_item_value(avtka, demo->items[ITEM_7SEG_S], v);
 
 	if(item == demo->items[ITEM_BUTTON] && v > 0.5) {
 		demo->col_counter++;
@@ -121,14 +127,45 @@ int main()
 	demo.items[ITEM_FILTER] = avtka_item_create(a, &item);
 
 	item.x = 20;
-	item.y = 130;
-	item.w = 42;
+	item.y = 120;
+	item.w = 12*3+4;
 	item.h = 16;
 	item.params[0] = 3;
 	item.draw = AVTKA_DRAW_7_SEG;
 	item.interact = AVTKA_INTERACT_DRAG_V;
 	snprintf(item.name, sizeof(item.name), "7 Seg");
 	demo.items[ITEM_7SEG] = avtka_item_create(a, &item);
+
+	item.x = 20;
+	item.y = 100;
+	item.w = 24+2;
+	item.h = 16;
+	item.params[0] = 2;
+	item.draw = AVTKA_DRAW_7_SEG;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "7 Seg - 2");
+	demo.items[ITEM_7SEG_2] = avtka_item_create(a, &item);
+
+	item.x = 20;
+	item.y = 80;
+	item.w = 12;
+	item.h = 16;
+	item.params[0] = 1;
+	item.draw = AVTKA_DRAW_7_SEG;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "7 Seg - 1");
+	demo.items[ITEM_7SEG_1] = avtka_item_create(a, &item);
+
+	item.x = 50;
+	item.y = 80;
+	item.w = 6*3;
+	item.h = 10;
+	item.params[0] = 3;
+	item.draw = AVTKA_DRAW_7_SEG;
+	item.interact = AVTKA_INTERACT_DRAG_V;
+	snprintf(item.name, sizeof(item.name), "7 Seg - small");
+	demo.items[ITEM_7SEG_S] = avtka_item_create(a, &item);
+	avtka_item_colour32(a, demo.items[ITEM_7SEG_S], 0x0000ff00);
 
 #if RUN_FOREVER
 	avtka_run(a);
