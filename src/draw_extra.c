@@ -1,4 +1,5 @@
 #include "draw_impl.h"
+#include "math.h"
 
 void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 {
@@ -13,26 +14,25 @@ void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 				item->opts.params[0] : 3;
 
 	cairo_rectangle( cr, x, y, w, h);
+	cairo_set_line_width(cr, 1.f);
+	cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
+	cairo_set_source_rgba(cr, 1,1,1, 0.8f);
+	cairo_stroke_preserve(cr);
 	cairo_clip( cr );
 
 	uint8_t digits[8] = {1};
 	/* cast down to a single int */
-	digits[0] = ((int)(value * 9.50f)) % 10;
-	digits[1] = ((int)(value * 99.950f)) % 10;
-	digits[2] = ((int)(value * 999.50f)) % 10;
-
-
-	printf(" %d %d %d\n", digits[2], digits[1], digits[0]);
-
-	/* dot if literally 1.0f was supplied */
-	int dot = (value >= 0.9950f);
+	float abs_val = fabsf(value);
+	digits[0] = ((int)(abs_val * 9.50f)) % 10;
+	digits[1] = ((int)(abs_val * 99.950f)) % 10;
+	digits[2] = ((int)(abs_val * 999.50f)) % 10;
 
 	for(int i = 0; i < nseg; i++) {
 		const uint8_t digit = digits[i];
 		const int32_t w_ = (w / nseg) - 4;
-		const int32_t x_ = 1 + x + ((w_+4)*i);
-		const int32_t y_ = y;
-		const int32_t h_ = h;
+		const int32_t x_ = 2 + x + ((w_+4)*i);
+		const int32_t y_ = y + 2;
+		const int32_t h_ = h - 4;
 
 		switch(digit) {
 		case 0:
@@ -104,15 +104,28 @@ void draw_7seg(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 		};
 
 		set_col(cr, item->col, FILL);
-		cairo_set_line_width(cr, 3);
+		cairo_set_line_width(cr, 2.f);
 		cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 		cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
 		cairo_stroke(cr);
 	};
 
+	/* dot if literally 1.0f was supplied */
+	int dot = (value >= 0.9950f);
 	if(dot) {
 		set_col(cr, ~item->col, FILL);
+		cairo_set_line_width(cr, 3.f);
 		cairo_rectangle(cr, x, y, 3, 3);
+		cairo_stroke(cr);
+	}
+
+	/* Negative - sign if value < 0 */
+	int negative = (value < 0.0f);
+	if(negative) {
+		set_col(cr, ~item->col, FILL);
+		cairo_set_line_width(cr, 3.f);
+		cairo_move_to( cr, x    , y + (h/2)-1);
+		cairo_line_to( cr, x + 5, y + (h/2)-1);
 		cairo_stroke(cr);
 	}
 }
