@@ -116,6 +116,7 @@ void avtka_item_label_show(struct avtka_t *a, uint32_t item, uint32_t show);
 void avtka_item_value(struct avtka_t *a, uint32_t item, float value);
 void avtka_item_colour32(struct avtka_t *a, uint32_t item, uint32_t col);
 void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value);
+float avtka_item_value_get(struct avtka_t *a, uint32_t item);
 /* Set the primary for the item */
 void avtka_item_colour(struct avtka_t *a, uint32_t item, uint8_t col);
 
