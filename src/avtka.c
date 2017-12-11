@@ -245,6 +245,12 @@ avtka_get_native_handle(struct avtka_t *a)
 	return puglGetNativeWindow(a->pugl);
 }
 
+void *
+avtka_get_cairo_surface(struct avtka_t *a)
+{
+	return puglGetContextSurface(a->pugl);
+}
+
 void
 avtka_redraw(struct avtka_t *a)
 {

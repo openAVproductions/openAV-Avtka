@@ -86,6 +86,10 @@ uint8_t avtka_register_colour(struct avtka_t *avtka,
 /* Call this to recieve the native widget handle */
 avtka_native_t avtka_get_native_handle(struct avtka_t *avtka);
 
+/* Call this to recieve a pointer to the PUGL cairo_t *
+ */
+void * avtka_get_cairo_surface(struct avtka_t *a);
+
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
 

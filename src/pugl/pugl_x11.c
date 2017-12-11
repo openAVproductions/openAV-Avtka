@@ -725,3 +725,14 @@ puglGetContext(PuglView* view)
 #endif
 	return NULL;
 }
+
+void*
+puglGetContextSurface(PuglView* view)
+{
+#ifdef PUGL_HAVE_CAIRO
+	if (view->ctx_type & PUGL_CAIRO) {
+		return view->impl->surface;
+	}
+#endif
+	return NULL;
+}

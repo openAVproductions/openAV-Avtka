@@ -522,6 +522,10 @@ puglGetSize(PuglView* view, int* width, int* height);
 PUGL_API void*
 puglGetContext(PuglView* view);
 
+/* same as above, but returns the surface itself */
+PUGL_API void*
+puglGetContextSurface(PuglView* view);
+
 
 /**
    Enter the drawing context.
