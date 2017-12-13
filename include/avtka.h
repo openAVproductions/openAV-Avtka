@@ -27,7 +27,9 @@ struct avtka_opts_t {
 	/* embedding */
 	avtka_native_t native_parent;
 	/* general */
-	uint32_t flags;
+	uint32_t flag_no_resize : 1;
+	uint32_t flags : 31;
+
 	uint16_t w;
 	uint16_t h;
 	avtka_event_cb event_callback;
