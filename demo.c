@@ -61,8 +61,8 @@ int main()
 		.h = 240,
 		.event_callback = event_cb,
 		.event_callback_userdata = &demo,
-		// uncomment for fixed size
-		//.flag_no_resize = 1,
+		// comment for fixed size
+		.resizeable = 1,
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 	if(!a) {
