@@ -238,6 +238,18 @@ fail:
 	return 0;
 }
 
+void
+avtka_visible(struct avtka_t *a, uint8_t visible)
+{
+	if(visible)
+		puglShowWindow(a->pugl);
+	else {
+		puglHideWindow(a->pugl);
+		printf("hiding window...\n");
+	}
+
+	avtka_redraw(a);
+}
 
 avtka_native_t
 avtka_get_native_handle(struct avtka_t *a)

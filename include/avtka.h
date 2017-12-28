@@ -76,6 +76,9 @@ struct avtka_item_opts_t {
 struct avtka_t *avtka_create(const char *window_name,
 			     struct avtka_opts_t *opts);
 
+/* set window visibility */
+void avtka_visible(struct avtka_t *a, uint8_t visible);
+
 void avtka_redraw(struct avtka_t *a);
 /* Update and redraw the UI */
 void avtka_iterate(struct avtka_t *a);
