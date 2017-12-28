@@ -8,11 +8,22 @@ void draw_button(struct avtka_t *a, struct avtka_item_t *item, void* cairo)
 	const int32_t w_ = item->opts.w;
 	const int32_t h_ = item->opts.h;
 
-	cairo_rectangle(cr, x_, y_, w_, h_);
-	set_col(cr, item->col, TRANS);
-	cairo_fill_preserve(cr);
 
-	set_col(cr, item->col, FILL);
+	float value = item->value;
+	if(value >= 0.50) {
+		cairo_rectangle(cr, x_, y_, w_, h_);
+		//set_col(cr, item->col, TRANS);
+		cairo_set_source(cr, a->cols[AVTKA_COL_BG_D]);
+		cairo_fill_preserve(cr);
+		cairo_set_line_width(cr, 3.5);
+		set_col(cr, item->col, FILL);
+	} else {
+		cairo_rectangle(cr, x_, y_, w_, h_);
+		set_col(cr, item->col, TRANS);
+		cairo_fill_preserve(cr);
+		set_col(cr, item->col, FILL);
+	}
+
 	cairo_stroke(cr);
 
 	if(item->opts.show_label)
