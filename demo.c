@@ -129,7 +129,18 @@ int main()
 	snprintf(item.name, sizeof(item.name), "7 Seg");
 	demo.items[ITEM_7SEG] = avtka_item_create(a, &item);
 
+#if RUN_FOREVER
 	avtka_run(a);
+#else
+	uint32_t dx;
+	uint32_t dy;
+	uint32_t dw;
+	uint32_t dh;
+	for(;;) {
+		avtka_iterate(a);
+		avtka_redraw_get_damaged_area(a, &dx, &dy, &dw, &dh);
+	}
+#endif
 
 	return 0;
 }

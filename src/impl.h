@@ -81,6 +81,14 @@ struct avtka_t {
 	int32_t clicked_x;
 	int32_t clicked_y;
 
+	/* damage history, see redraw_get_damaged_area() */
+	uint32_t damage_x;
+	uint32_t damage_y;
+	uint32_t damage_w;
+	uint32_t damage_h;
+	uint16_t damage_rev;
+	uint16_t rev;
+
 	/* lookup table of cairo_pattern_t pointers for colours */
 	uint16_t cols_used;
 	void *cols[UINT8_MAX];

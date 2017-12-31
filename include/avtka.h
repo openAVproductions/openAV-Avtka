@@ -80,6 +80,16 @@ struct avtka_t *avtka_create(const char *window_name,
 void avtka_visible(struct avtka_t *a, uint8_t visible);
 
 void avtka_redraw(struct avtka_t *a);
+
+/* retrieve the size of the damaged area since this function was
+ * last called. Calling right after redraw() informs the application
+ * of the damaged area - allowing it to optimize which pixels to update
+ * from the surface (see avtka_get_cairo_surface);
+ */
+void avtka_redraw_get_damaged_area(struct avtka_t *a,
+				   uint32_t *x, uint32_t *y,
+				   uint32_t *w, uint32_t *h);
+
 /* Update and redraw the UI */
 void avtka_iterate(struct avtka_t *a);
 /* Run unit a quit command is issued by the user */

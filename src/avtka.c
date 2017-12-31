@@ -9,12 +9,32 @@
 
 static void on_display(PuglView* view);
 
+static inline void
+item_damage_and_redisplay(struct avtka_t *a, uint32_t item, PuglView *view)
+{
+	uint32_t x = a->items[item].opts.x;
+	uint32_t y = a->items[item].opts.y;
+	uint32_t w = a->items[item].opts.w;
+	uint32_t h = a->items[item].opts.h;
+	if(x < a->damage_x)
+		a->damage_x = x;
+	if(y < a->damage_y)
+		a->damage_y = y;
+	if(w > a->damage_w)
+		a->damage_w = w;
+	if(h > a->damage_h)
+		a->damage_h = h;
+	puglPostRedisplay(view);
+}
+
 static void
 on_event(PuglView* view, const PuglEvent* event)
 {
 	struct avtka_t *a = puglGetHandle(view);
 
 	float scale_inv = 1 / a->rescale;
+
+	int handled = 1;
 
 	switch (event->type) {
 	case PUGL_KEY_PRESS:
@@ -30,7 +50,7 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint32_t item = avtka_item_contact(a, x, y);
 		int32_t redraw = avtka_interact_press(a, item, x, y);
 		if(redraw)
-			puglPostRedisplay(view);
+			item_damage_and_redisplay(a, item, view);
 		} break;
 	case PUGL_BUTTON_RELEASE: {
 		if(a->clicked_item == 0)
@@ -41,7 +61,7 @@ on_event(PuglView* view, const PuglEvent* event)
 		int32_t redraw = avtka_interact_release(a, a->clicked_item,
 							x, y);
 		if(redraw)
-			puglPostRedisplay(view);
+			item_damage_and_redisplay(a, a->clicked_item, view);
 		a->clicked_item = 0;
 		} break;
 	case PUGL_MOTION_NOTIFY: {
@@ -52,8 +72,10 @@ on_event(PuglView* view, const PuglEvent* event)
 							       a->clicked_item,
 							       x, y);
 			if(redraw)
-				puglPostRedisplay(view);
+				item_damage_and_redisplay(a, a->clicked_item,
+							  view);
 		}
+		handled = 0;
 		} break;
 	case PUGL_ENTER_NOTIFY:
 		a->entered = true;
@@ -77,8 +99,12 @@ on_event(PuglView* view, const PuglEvent* event)
 	case PUGL_CLOSE:
 		a->quit = 1;
 		break;
-	default: break;
+	default:
+		handled = 0;
+		break;
 	}
+
+	a->rev += handled;
 }
 
 static void
@@ -267,6 +293,28 @@ void
 avtka_redraw(struct avtka_t *a)
 {
 	puglPostRedisplay(a->pugl);
+}
+
+void
+avtka_redraw_get_damaged_area(struct avtka_t *a,
+			      uint32_t *x, uint32_t *y,
+			      uint32_t *w, uint32_t *h)
+{
+	*x = a->damage_x;
+	*y = a->damage_y;
+	*w = a->damage_w;
+	*h = a->damage_h;
+
+	if(a->damage_rev != a->rev) {
+		printf("damaged %d, %d\t%d,%d\n", *x, *y, *w, *h);
+		a->damage_rev = a->rev;
+	}
+
+	/* set to "extremes" of wrong, so any item is counted */
+	a->damage_x = a->opts.w;
+	a->damage_y = a->opts.h;
+	a->damage_w = 0;
+	a->damage_h = 0;
 }
 
 int32_t
