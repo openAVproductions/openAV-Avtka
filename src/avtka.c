@@ -7,7 +7,7 @@
 
 #include <cairo/cairo.h>
 
-static void on_display(PuglView* view);
+static void pugl_on_display(PuglView* view);
 
 static inline void
 item_damage_and_redisplay(struct avtka_t *a, uint32_t item, PuglView *view)
@@ -94,7 +94,7 @@ on_event(PuglView* view, const PuglEvent* event)
 		a->rescale = rw >= rh ? rh : rw;
 		} break;
 	case PUGL_EXPOSE:
-		on_display(view);
+		pugl_on_display(view);
 		break;
 	case PUGL_CLOSE:
 		a->quit = 1;
@@ -108,11 +108,8 @@ on_event(PuglView* view, const PuglEvent* event)
 }
 
 static void
-on_display(PuglView* view)
+avtka_on_display(struct avtka_t *a, cairo_t *cr)
 {
-	cairo_t* cr = puglGetContext(view);
-	struct avtka_t *a = puglGetHandle(view);
-
 	/* resize the whole cairo drawing, to draw bigger */
 	cairo_scale(cr, a->rescale, a->rescale);
 
@@ -134,7 +131,6 @@ on_display(PuglView* view)
 		cairo_surface_flush(s);
 		cairo_destroy(scr);
 #endif
-
 		cairo_surface_flush(s);
 		cairo_set_source_surface(cr, s, x, y);
 		cairo_paint(cr);
@@ -151,6 +147,15 @@ on_display(PuglView* view)
 	}
 
 	cairo_identity_matrix(cr);
+}
+
+static void
+pugl_on_display(PuglView* view)
+{
+	struct avtka_t *a = puglGetHandle(view);
+	cairo_t* cr = puglGetContext(view);
+
+	avtka_on_display(a, cr);
 }
 
 uint8_t
