@@ -317,8 +317,9 @@ avtka_redraw_get_damaged_area(struct avtka_t *a,
 {
 	*x = a->damage_x;
 	*y = a->damage_y;
-	*w = a->damage_w;
-	*h = a->damage_h;
+
+	*w = a->damage_w - a->damage_x;
+	*h = a->damage_h - a->damage_y;
 
 	if(a->damage_rev != a->rev)
 		a->damage_rev = a->rev;
