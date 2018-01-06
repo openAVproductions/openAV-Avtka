@@ -12,18 +12,7 @@ static void pugl_on_display(PuglView* view);
 static inline void
 item_damage_and_redisplay(struct avtka_t *a, uint32_t item, PuglView *view)
 {
-	uint32_t x = a->items[item].opts.x;
-	uint32_t y = a->items[item].opts.y;
-	uint32_t w = a->items[item].opts.w;
-	uint32_t h = a->items[item].opts.h;
-	if(x < a->damage_x)
-		a->damage_x = x;
-	if(y < a->damage_y)
-		a->damage_y = y;
-	if(w > a->damage_w)
-		a->damage_w = w;
-	if(h > a->damage_h)
-		a->damage_h = h;
+	item_damage(a, item);
 	puglPostRedisplay(view);
 }
 
@@ -196,7 +185,7 @@ avtka_colours_init(struct avtka_t *avtka)
 	avtka->cols_used = i;
 }
 
-struct avtka_t *
+static struct avtka_t *
 avtka_create_impl(const char *window_name, struct avtka_opts_t *opts)
 {
 	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
@@ -345,7 +334,10 @@ avtka_destroy(struct avtka_t *a)
 void
 avtka_iterate(struct avtka_t *a)
 {
-	puglProcessEvents(a->pugl);
+	if(a->pugl) {
+		puglProcessEvents(a->pugl);
+		return;
+	}
 }
 
 void

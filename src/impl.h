@@ -116,3 +116,21 @@ enum AVTKA_COLOURS {
 	AVTKA_COL_PRI1_L,
 	AVTKA_COL_PRI1_T,
 };
+
+static inline void
+item_damage(struct avtka_t *a, uint32_t item)
+{
+	uint32_t x = a->items[item].opts.x;
+	uint32_t y = a->items[item].opts.y;
+	uint32_t w = a->items[item].opts.w;
+	uint32_t h = a->items[item].opts.h;
+	if(x < a->damage_x)
+		a->damage_x = x;
+	if(y < a->damage_y)
+		a->damage_y = y;
+	if(w > a->damage_w)
+		a->damage_w = w;
+	if(h > a->damage_h)
+		a->damage_h = h;
+}
+
