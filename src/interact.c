@@ -11,6 +11,7 @@ int32_t avtka_interact_press(struct avtka_t *a, uint32_t item,
 	case AVTKA_INTERACT_CLICK:
 		/* toggle value */
 		a->items[item].value = !a->items[item].value;
+		item_damage(a, item);
 		/* perform callback */
 		if(a->opts.event_callback) {
 			a->opts.event_callback(a, item,
@@ -42,6 +43,7 @@ int32_t avtka_interact_release(struct avtka_t *a, uint32_t item,
 	switch(a->items[item].opts.interact) {
 	case AVTKA_INTERACT_CLICK:
 		a->items[item].value = !a->items[item].value;
+		item_damage(a, item);
 		/* perform callback */
 		if(a->opts.event_callback) {
 			a->opts.event_callback(a, item,
@@ -73,6 +75,7 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 		tmp = tmp > 1.0f ? 1.0 : tmp;
 		tmp = tmp < 0.0f ? 0.0 : tmp;
 		a->items[item].value = tmp;
+		item_damage(a, item);
 		a->clicked_x = x;
 		a->clicked_y = y;
 
@@ -95,6 +98,7 @@ int32_t avtka_interact_motion(struct avtka_t *a, uint32_t item,
 		if(tmp > 1.0f) tmp -= 1.0f;
 		if(tmp < 0.0f) tmp += 1.0f;
 		a->items[item].value = tmp;
+		item_damage(a, item);
 		a->clicked_x = x;
 		a->clicked_y = y;
 

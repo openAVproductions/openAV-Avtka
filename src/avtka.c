@@ -135,6 +135,17 @@ avtka_on_display(struct avtka_t *a, cairo_t *cr)
 		}
 	}
 
+	if(a->opts.debug_redraws) {
+		cairo_set_source_rgb(cr, 1, 0, 0);
+		int w = a->damage_w - a->damage_x;
+		int h = a->damage_h - a->damage_y;
+		cairo_rectangle(cr, a->damage_x, a->damage_y,
+				w, h);
+		cairo_stroke(cr);
+		printf("final damage rect: %d,%d %d,%d\n",
+				a->damage_x, a->damage_y, w, h);
+	}
+
 	cairo_identity_matrix(cr);
 }
 

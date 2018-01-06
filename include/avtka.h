@@ -28,7 +28,8 @@ struct avtka_opts_t {
 	avtka_native_t native_parent;
 	/* general */
 	uint32_t resizeable : 1;
-	uint32_t flags : 31;
+	uint32_t debug_redraws : 1;
+	uint32_t flags : 30;
 
 	uint16_t w;
 	uint16_t h;

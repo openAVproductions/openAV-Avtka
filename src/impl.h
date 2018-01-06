@@ -1,6 +1,7 @@
 /* This file is part of AVTKA by OpenAV */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "avtka.h"
 
@@ -124,13 +125,26 @@ item_damage(struct avtka_t *a, uint32_t item)
 	uint32_t y = a->items[item].opts.y;
 	uint32_t w = a->items[item].opts.w;
 	uint32_t h = a->items[item].opts.h;
-	if(x < a->damage_x)
+	int changed = 0;
+
+	if(x < a->damage_x) {
 		a->damage_x = x;
-	if(y < a->damage_y)
+		changed = 1;
+	}
+
+	if(y < a->damage_y) {
 		a->damage_y = y;
-	if(w > a->damage_w)
-		a->damage_w = w;
-	if(h > a->damage_h)
-		a->damage_h = h;
+		changed = 1;
+	}
+
+	if(x + w > a->damage_w)
+		a->damage_w = x + w, changed = 1;
+
+	if(y + h > a->damage_h)
+		a->damage_h = y + h, changed = 1;
+
+	if(changed)
+		printf("avtka: item %d changed redraw: %d,%d %d,%d\n",
+		       item, x, y, w, h);
 }
 
