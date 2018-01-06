@@ -192,7 +192,7 @@ avtka_colours_init(struct avtka_t *avtka)
 }
 
 struct avtka_t *
-avtka_create(const char *window_name, struct avtka_opts_t *opts)
+avtka_create_impl(const char *window_name, struct avtka_opts_t *opts)
 {
 	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
 	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 32);
@@ -226,22 +226,6 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 
 	ui->opts = *opts;
 
-	PuglView *view = puglInit(NULL, NULL);
-
-	/* embed if requrested */
-	if(opts->native_parent != 0)
-		puglInitWindowParent(view, opts->native_parent);
-
-	puglInitWindowSize  (view, opts->w, opts->h);
-	puglInitResizable   (view, opts->resizeable);
-	puglInitContextType (view, PUGL_CAIRO | PUGL_GL);
-	puglIgnoreKeyRepeat (view, true );
-	puglSetEventFunc    (view, on_event);
-	puglCreateWindow    (view, window_name);
-	puglShowWindow      (view);
-	puglSetHandle       (view, ui);
-	ui->pugl = view;
-
 	ui->draw[AVTKA_DRAW_BUTTON] = draw_button;
 	ui->draw[AVTKA_DRAW_DIAL] = draw_dial;
 	ui->draw[AVTKA_DRAW_JOG_WHEEL] = draw_jog_wheel;
@@ -262,6 +246,32 @@ fail:
 	if(ui)
 		free(ui);
 	return 0;
+}
+
+struct avtka_t *
+avtka_create(const char *window_name, struct avtka_opts_t *opts)
+{
+	struct avtka_t *ui = avtka_create_impl(window_name, opts);
+	if(!ui)
+		return 0;
+
+	PuglView *view = puglInit(NULL, NULL);
+
+	/* embed if requrested */
+	if(opts->native_parent != 0)
+		puglInitWindowParent(view, opts->native_parent);
+
+	puglInitWindowSize  (view, opts->w, opts->h);
+	puglInitResizable   (view, opts->resizeable);
+	puglInitContextType (view, PUGL_CAIRO | PUGL_GL);
+	puglIgnoreKeyRepeat (view, true );
+	puglSetEventFunc    (view, on_event);
+	puglCreateWindow    (view, window_name);
+	puglShowWindow      (view);
+	puglSetHandle       (view, ui);
+	ui->pugl = view;
+
+	return ui;
 }
 
 void
