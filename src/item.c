@@ -45,6 +45,7 @@ void avtka_item_value(struct avtka_t *a, uint32_t item, float value)
 {
 	struct avtka_item_t *it = &a->items[item];
 	it->value = value;
+	item_damage(a, item);
 }
 
 float avtka_item_value_get(struct avtka_t *a, uint32_t item)
@@ -63,6 +64,7 @@ void avtka_item_value_inc(struct avtka_t *a, uint32_t item, float value)
 	it->value += value;
 	if(it->value > 1.0f) it->value = 1.0f;
 	if(it->value < 0.0f) it->value = 0.0f;
+	item_damage(a, item);
 }
 
 int32_t avtka_item_destroy(struct avtka_t *ui, uint32_t item_id)

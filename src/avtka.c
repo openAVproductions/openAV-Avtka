@@ -309,10 +309,8 @@ avtka_redraw_get_damaged_area(struct avtka_t *a,
 	*w = a->damage_w;
 	*h = a->damage_h;
 
-	if(a->damage_rev != a->rev) {
-		printf("damaged %d, %d\t%d,%d\n", *x, *y, *w, *h);
+	if(a->damage_rev != a->rev)
 		a->damage_rev = a->rev;
-	}
 
 	/* set to "extremes" of wrong, so any item is counted */
 	a->damage_x = a->opts.w;
