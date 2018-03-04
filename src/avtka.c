@@ -100,6 +100,9 @@ static void
 avtka_on_display(struct avtka_t *a, cairo_t *cr)
 {
 	/* resize the whole cairo drawing, to draw bigger */
+	if(a->rescale < 0.001f)
+		printf("%s: warning scale very small: %f\n", __func__,
+		       a->rescale);
 	cairo_scale(cr, a->rescale, a->rescale);
 
 	/* draw background to fill "official aspect ratio area" */
@@ -133,6 +136,14 @@ avtka_on_display(struct avtka_t *a, cairo_t *cr)
 			a->draw[draw_id](a, &a->items[i], cr);
 			cairo_restore(cr);
 		}
+
+#if 0
+		/* For testing each draw iteration output */
+		char buf[64];
+		snprintf(buf, sizeof(buf), "item_%d.png", i);
+		cairo_surface_flush(a->cairo_surface);
+		cairo_surface_write_to_png(a->cairo_surface, buf);
+#endif
 	}
 
 	if(a->opts.debug_redraws) {
@@ -142,8 +153,10 @@ avtka_on_display(struct avtka_t *a, cairo_t *cr)
 		cairo_rectangle(cr, a->damage_x, a->damage_y,
 				w, h);
 		cairo_stroke(cr);
+		/*
 		printf("final damage rect: %d,%d %d,%d\n",
 				a->damage_x, a->damage_y, w, h);
+		*/
 	}
 
 	cairo_identity_matrix(cr);
@@ -253,14 +266,16 @@ fail:
 	return 0;
 }
 
-struct avtka_t *
-avtka_create(const char *window_name, struct avtka_opts_t *opts)
+/* sets up a PUGL context for this AVKTA instance. This is not required
+ * to enable controller screens use Cairo directly - without any graphics
+ * backend like X11 to handle events/redraws.
+ */
+void
+avtka_init_pugl(struct avtka_t *ui, const char *window_name)
 {
-	struct avtka_t *ui = avtka_create_impl(window_name, opts);
-	if(!ui)
-		return 0;
-
 	PuglView *view = puglInit(NULL, NULL);
+
+	struct avtka_opts_t *opts = &ui->opts;
 
 	/* embed if requrested */
 	if(opts->native_parent != 0)
@@ -276,12 +291,63 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 	puglSetHandle       (view, ui);
 	ui->pugl = view;
 
+	ui->cairo_surface = puglGetContextSurface(ui->pugl);
+	ui->cairo_context = puglGetContext(ui->pugl);
+}
+
+int
+avtka_init_raw_cairo(struct avtka_t *a)
+{
+	/* TODO: think about surface formats - support 565 here?
+	 * Pro: cairo handles 565 conversion, con; performance of drawing
+	 */
+	a->cairo_surface = cairo_image_surface_create(
+						      CAIRO_FORMAT_ARGB32,
+						      //CAIRO_FORMAT_RGB16_565,
+						      a->opts.w,
+						      a->opts.h);
+	cairo_status_t ret = cairo_surface_status(a->cairo_surface);
+	if(ret != CAIRO_STATUS_SUCCESS) {
+		printf("error creating surface, cairo returns %s\n",
+			cairo_status_to_string(ret));
+		return -1;
+	}
+
+	a->cairo_context = cairo_create(a->cairo_surface);
+	ret = cairo_status(a->cairo_context);
+	if(ret != CAIRO_STATUS_SUCCESS) {
+		printf("error creating context, cairo returns %s\n",
+			cairo_status_to_string(ret));
+		return -1;
+	}
+
+	/* as its a offscreen only, just set scale to 1.0f */
+	a->rescale = 1.0f;
+
+	return 0;
+}
+
+struct avtka_t *
+avtka_create(const char *window_name, struct avtka_opts_t *opts)
+{
+	struct avtka_t *ui = avtka_create_impl(window_name, opts);
+	if(!ui)
+		return 0;
+
+	if(ui->opts.offscreen_only)
+		avtka_init_raw_cairo(ui);
+	else
+		avtka_init_pugl(ui, window_name);
+
 	return ui;
 }
 
 void
 avtka_visible(struct avtka_t *a, uint8_t visible)
 {
+	if(a->opts.offscreen_only)
+		return;
+
 	if(visible)
 		puglShowWindow(a->pugl);
 	else {
@@ -301,13 +367,31 @@ avtka_get_native_handle(struct avtka_t *a)
 void *
 avtka_get_cairo_surface(struct avtka_t *a)
 {
-	return puglGetContextSurface(a->pugl);
+	return a->cairo_surface;
+}
+
+int avtka_take_screenshot(struct avtka_t *a, const char *filename)
+{
+	if(!filename)
+		return -1;
+
+	cairo_status_t ret = cairo_surface_write_to_png(a->cairo_surface,
+							filename);
+	if(ret != CAIRO_STATUS_SUCCESS) {
+		printf("%s: error taking screenshot, cairo returns %s\n",
+		       __func__, cairo_status_to_string(ret));
+		return -2;
+	}
+
+	return 0;
 }
 
 void
 avtka_redraw(struct avtka_t *a)
 {
-	puglPostRedisplay(a->pugl);
+	if(!a->opts.offscreen_only)
+		puglPostRedisplay(a->pugl);
+	/* raw cairo will redraw anyway */
 }
 
 void
@@ -335,8 +419,14 @@ int32_t
 avtka_destroy(struct avtka_t *a)
 {
 	PuglView *view = a->pugl;
-	puglHideWindow(view);
-	puglDestroy(view);
+	if(view) {
+		puglHideWindow(view);
+		puglDestroy(view);
+	} else {
+		cairo_surface_destroy(a->cairo_surface);
+		cairo_destroy(a->cairo_context);
+	}
+
 	free(a);
 	return 0;
 }
@@ -348,6 +438,9 @@ avtka_iterate(struct avtka_t *a)
 		puglProcessEvents(a->pugl);
 		return;
 	}
+
+	/* manually iter events and updates, redraw the cairo backend */
+	avtka_on_display(a, a->cairo_context);
 }
 
 void

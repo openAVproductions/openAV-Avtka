@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "avtka.h"
 
@@ -55,8 +56,17 @@ void event_cb(struct avtka_t *avtka, uint32_t item, float v, void *userdata)
 	}
 }
 
+static uint32_t done;
+
+void sighandler(int signal)
+{
+	done = 1;
+}
+
 int main()
 {
+	signal(SIGINT, &sighandler);
+
 	struct demo_t demo;
 	memset(&demo, 0, sizeof(struct demo_t));
 	demo.cols[0] = 5;
@@ -67,9 +77,15 @@ int main()
 		.h = 240,
 		.event_callback = event_cb,
 		.event_callback_userdata = &demo,
-		// comment for fixed size
-		.debug_redraws = 1,
+		/* comment to have a fixed size window */
 		.resizeable = 1,
+
+		/* Uncomment to show red square around partial redraw */
+		//.debug_redraws = 1,
+
+		/* Uncomment to NOT show an X11 window, instead using an
+		 * offscreen buffer. Useful for embedded use-cases */
+		.offscreen_only = 1,
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 	if(!a) {
@@ -167,18 +183,27 @@ int main()
 	demo.items[ITEM_7SEG_S] = avtka_item_create(a, &item);
 	avtka_item_colour32(a, demo.items[ITEM_7SEG_S], 0x0000ff00);
 
+	/* iterate once to draw screen, then take screenshot */
+	avtka_iterate(a);
+	int ret = avtka_take_screenshot(a, "screen.png");
+	if(ret)
+		printf("screenshot error, returned %d\n", ret);
+
 #if RUN_FOREVER
+	/* signal handler won't work here */
 	avtka_run(a);
 #else
 	uint32_t dx;
 	uint32_t dy;
 	uint32_t dw;
 	uint32_t dh;
-	for(;;) {
+	while(!done) {
 		avtka_iterate(a);
 		avtka_redraw_get_damaged_area(a, &dx, &dy, &dw, &dh);
 	}
-#endif
 
+	avtka_destroy(a);
+
+#endif
 	return 0;
 }

@@ -29,7 +29,8 @@ struct avtka_opts_t {
 	/* general */
 	uint32_t resizeable : 1;
 	uint32_t debug_redraws : 1;
-	uint32_t flags : 30;
+	uint32_t offscreen_only : 1;
+	uint32_t flags : 29;
 
 	uint16_t w;
 	uint16_t h;
@@ -105,6 +106,9 @@ avtka_native_t avtka_get_native_handle(struct avtka_t *avtka);
 /* Call this to recieve a pointer to the PUGL cairo_t *
  */
 void * avtka_get_cairo_surface(struct avtka_t *a);
+
+/* Save a PNG file containing the UI state */
+int avtka_take_screenshot(struct avtka_t *a, const char *filename);
 
 /* Quit and cleanup a ui */
 int32_t avtka_destroy(struct avtka_t *a);
