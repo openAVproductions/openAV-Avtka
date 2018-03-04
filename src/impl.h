@@ -149,9 +149,10 @@ item_damage(struct avtka_t *a, uint32_t item)
 
 	if(y + h > a->damage_h)
 		a->damage_h = y + h, changed = 1;
-
+#if 0
 	if(changed)
 		printf("avtka: item %d changed redraw: %d,%d %d,%d\n",
 		       item, x, y, w, h);
+#endif
 }
 
