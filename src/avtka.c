@@ -345,6 +345,9 @@ avtka_create(const char *window_name, struct avtka_opts_t *opts)
 void
 avtka_visible(struct avtka_t *a, uint8_t visible)
 {
+	if(a->opts.offscreen_only)
+		return;
+
 	if(visible)
 		puglShowWindow(a->pugl);
 	else {
