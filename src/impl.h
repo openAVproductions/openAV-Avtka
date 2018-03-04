@@ -65,6 +65,13 @@ struct avtka_t {
 	/* implementation details */
 	void* pugl;
 
+	/* always points to a valid cairo surface. If PUGL is in use, it
+	 * extracts the cairo_surface from it, otherwise a cairo_surface
+	 * is created directly. Flag opts.offscreen_only knows if PUGL is
+	 * currently active or not */
+	void *cairo_surface;
+	void *cairo_context;
+
 	/* all items in the UI */
 	uint32_t item_count;
 	struct avtka_item_t items[AVTKA_MAX_ITEMS];
