@@ -41,6 +41,9 @@ uint8_t *
 avtka_screen_get_data_ptr(struct avtka_t *a, uint16_t screen_id)
 {
 	cairo_surface_t *s = a->screen_surfaces[screen_id];
+	if(!s)
+		return 0;
+
 	uint8_t *data = cairo_image_surface_get_data(s);
 	return data;
 }
