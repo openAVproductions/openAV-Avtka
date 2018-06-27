@@ -427,6 +427,10 @@ avtka_destroy(struct avtka_t *a)
 		cairo_destroy(a->cairo_context);
 	}
 
+	/* free cairo pattern_t's used for colours here */
+	for(int i = 0; i < a->cols_used * 4; i++)
+		cairo_pattern_destroy(a->cols[i]);
+
 	free(a);
 	return 0;
 }
