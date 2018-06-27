@@ -85,7 +85,7 @@ int main()
 
 		/* Uncomment to NOT show an X11 window, instead using an
 		 * offscreen buffer. Useful for embedded use-cases */
-		.offscreen_only = 1,
+		//.offscreen_only = 1,
 	};
 	struct avtka_t *a = avtka_create("AVTKA v0.1", &opts);
 	if(!a) {
