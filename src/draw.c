@@ -148,6 +148,9 @@ void draw_jog_wheel(struct avtka_t *a, struct avtka_item_t *item, void* c)
 	const int32_t h_ = item->opts.h;
 
 	float value = item->value;
+	/* handle -NAN */
+	if(value != value)
+		value = 0;
 
 #if 0
 	cairo_rectangle(cr, x_, y_, w_, h_);
