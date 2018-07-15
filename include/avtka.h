@@ -67,10 +67,10 @@ struct avtka_item_opts_t {
 	uint8_t draw;
 	uint8_t interact;
 	uint8_t colour;
-	uint8_t params[4];
 	/* bitset of options */
 	uint8_t show_label   : 1;
 	uint8_t flags_unused : 7;
+	uint16_t params[4];
 	char name[ITEM_NAME_MAX];
 };
 

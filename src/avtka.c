@@ -213,7 +213,7 @@ static struct avtka_t *
 avtka_create_impl(const char *window_name, struct avtka_opts_t *opts)
 {
 	BUILD_BUG_ON(sizeof(struct avtka_opts_t) != 64);
-	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 32);
+	BUILD_BUG_ON(sizeof(struct avtka_item_opts_t) != 36);
 
 	struct avtka_t *ui = calloc(1, sizeof(struct avtka_t));
 	if(!ui) {

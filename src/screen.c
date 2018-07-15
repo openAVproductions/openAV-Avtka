@@ -9,24 +9,20 @@
 int32_t
 avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 {
-	/* add a new screen to the UI here */
-	printf("creating screen %d, pixel size %d %d\n", a->screen_count,
-	       o->px_x, o->px_y);
-
 	cairo_surface_t *img;
-
 	/* TODO: rework the creation based on HW device capabilities.
 	 * Note that the *BINARY* interface of the *HARDWARE CONTROLLER*
 	 * should be simulated here. Even if this means looping through
 	 * each and every pixel - the same API as is exposed to draw on
 	 * the HW must be functioning on the virtual display */
-#if 0
+
 	if(o->flags_1bit) {
-		img = cairo_image_surface_create(CAIRO_FORMAT_A1, 128, 64);
+		img = cairo_image_surface_create(CAIRO_FORMAT_A1,
+						 o->px_x, o->px_y);
 	}
 	else
-#endif
-	img = cairo_image_surface_create(CAIRO_FORMAT_RGB24, 128, 64);
+		img = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
+						 o->px_x, o->px_y);
 
 	int screen_id = a->screen_count;
 	a->screen_surfaces[screen_id] = img;
