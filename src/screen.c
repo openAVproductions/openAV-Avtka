@@ -24,6 +24,14 @@ avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 		img = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
 						 o->px_x, o->px_y);
 
+	/* fill with black for starting */
+	cairo_t *cr = cairo_create(img);
+	cairo_set_source_rgb(cr, 0, 0, 0);
+	cairo_rectangle(cr, 0, 0, o->px_x, o->px_y);
+	cairo_fill(cr);
+	cairo_surface_flush(img);
+	cairo_destroy(cr);
+
 	int screen_id = a->screen_count;
 	a->screen_surfaces[screen_id] = img;
 	a->screen_opts[screen_id] = *o;

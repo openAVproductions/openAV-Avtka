@@ -115,17 +115,29 @@ avtka_on_display(struct avtka_t *a, cairo_t *cr)
 		cairo_surface_t *s = a->screen_surfaces[i];
 		int x = a->screen_opts[i].x;
 		int y = a->screen_opts[i].y;
-#if 0
+
+		float screen_rescale_x = (float)a->screen_opts[i].w /
+			a->screen_opts[i].px_x;
+		float screen_rescale_y = (float)a->screen_opts[i].h /
+			a->screen_opts[i].px_y;
+
+		/* translate/scale the screen by the device's pixel / mm */
+		cairo_save(cr);
+		cairo_translate(cr, x, y);
+		cairo_scale(cr,screen_rescale_x, screen_rescale_y);
+
+		/* outline the screen */
 		cairo_t *scr = cairo_create(s);
-		cairo_set_source_rgba(scr, 1, 1, 1, 1);
-		cairo_rectangle(scr, 0,0, 128, 64);
+		cairo_set_source_rgba(scr, 1, 1, 1, 0.8);
+		cairo_rectangle(scr, 0, 0, a->screen_opts[i].px_x,
+				a->screen_opts[i].px_y);
 		cairo_stroke(scr);
 		cairo_surface_flush(s);
 		cairo_destroy(scr);
-#endif
-		cairo_surface_flush(s);
-		cairo_set_source_surface(cr, s, x, y);
+
+		cairo_set_source_surface(cr, s, 0, 0);
 		cairo_paint(cr);
+		cairo_restore(cr);
 	}
 
 	/* iterate all items, calling "draw" on them */
