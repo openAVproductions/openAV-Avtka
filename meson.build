@@ -64,6 +64,11 @@ else
               include_directories: avtka_includes,
               link_with: avtka)
 
+  avtka_dynamic_ui = files('examples/dynamic_ui/dynamic_ui.c')
+  executable('avtka_dynamic_ui', avtka_dynamic_ui,
+              include_directories: avtka_includes,
+              link_with: avtka)
+
   # grab test files
   subdir('tests')
 
