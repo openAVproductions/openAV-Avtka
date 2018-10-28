@@ -37,9 +37,18 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint32_t x = event->button.x * scale_inv;
 		uint32_t y = event->button.y * scale_inv;
 		uint32_t item = avtka_item_contact(a, x, y);
-		int32_t redraw = avtka_interact_press(a, item, x, y);
-		if(redraw)
-			item_damage_and_redisplay(a, item, view);
+
+		uint8_t edit_mode_flags = (PUGL_MOD_SHIFT | PUGL_MOD_CTRL);
+		uint8_t edit_mode = (event->button.state == edit_mode_flags);
+		uint8_t right_click = (event->button.button == 3);
+
+		if(edit_mode && right_click) {
+			printf("ctlr-shift-r_click - opening editor\n");
+		} else {
+			int32_t redraw = avtka_interact_press(a, item, x, y);
+			if(redraw)
+				item_damage_and_redisplay(a, item, view);
+			}
 		} break;
 	case PUGL_BUTTON_RELEASE: {
 		if(a->clicked_item == 0)
