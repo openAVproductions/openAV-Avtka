@@ -15,14 +15,21 @@ avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 	 * should be simulated here. Even if this means looping through
 	 * each and every pixel - the same API as is exposed to draw on
 	 * the HW must be functioning on the virtual display */
-
-	if(o->flags_1bit) {
+	if(o->flags_px_bit_1) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_A1,
 						 o->px_x, o->px_y);
-	}
-	else
+	} if(o->flags_px_rgb_16_565) {
+		img = cairo_image_surface_create(CAIRO_FORMAT_RGB16_565,
+						 o->px_x, o->px_y);
+	} if(o->flags_px_argb_32) {
+		img = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+						 o->px_x, o->px_y);
+	} if(o->flags_px_rgb_24) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
 						 o->px_x, o->px_y);
+	} else {
+		AVTKA_WARN(a, "Failed: no pixel format set. flags_px_* all %d\n", 0);
+	}
 
 	/* fill with black for starting */
 	cairo_t *cr = cairo_create(img);

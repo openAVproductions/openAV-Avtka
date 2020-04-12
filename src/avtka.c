@@ -43,7 +43,8 @@ on_event(PuglView* view, const PuglEvent* event)
 		uint8_t right_click = (event->button.button == 3);
 
 		if(edit_mode && right_click) {
-			printf("ctlr-shift-r_click - opening editor\n");
+			//printf("ctlr-shift-r_click - opening editor\n");
+			a->edit_mode = !a->edit_mode;
 		} else {
 			int32_t redraw = avtka_interact_press(a, item, x, y);
 			if(redraw)
@@ -178,6 +179,12 @@ avtka_on_display(struct avtka_t *a, cairo_t *cr)
 		printf("final damage rect: %d,%d %d,%d\n",
 				a->damage_x, a->damage_y, w, h);
 		*/
+	}
+
+	if(a->edit_mode) {
+		cairo_set_source_rgba(cr, 0, 0x7C, 0xFF, 0.2);
+		cairo_rectangle(cr, 20, 20, a->opts.w - 40, a->opts.h - 40);
+		cairo_stroke(cr);
 	}
 
 	cairo_identity_matrix(cr);

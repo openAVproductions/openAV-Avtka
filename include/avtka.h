@@ -116,10 +116,20 @@ int32_t avtka_destroy(struct avtka_t *a);
 struct avtka_screen_opts_t {
 	uint16_t x, y, w, h;
 	uint16_t px_x, px_y;
-	/* single bit per pixel; on off only */
-	uint32_t flags_1bit : 1;
-	/* rgb capable screen */
-	uint32_t flags_rgb  : 1;
+
+	/* Pixel format integer, that will be how the pixel data written
+	 * is interpreted:
+	 *  bit_1      : Single bit per pixel, indicates on/off
+	 *  rgb_24     : 3 bytes per pixel, RGB format, no alpha
+	 *  argb_32    : 4 bytes per pixel, Alpha first, then RGB
+	 *  rgb_16_565 : 2 bytes per pixel, rgb 565 encoded
+	 */
+	uint8_t pixel_format;
+
+	uint32_t flags_px_bit_1 : 1;
+	uint32_t flags_px_rgb_24  : 1;
+	uint32_t flags_px_argb_32  : 1;
+	uint32_t flags_px_rgb_16_565  : 1;
 };
 
 /* allocate a new screen in the UI.

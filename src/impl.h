@@ -58,9 +58,9 @@ struct avtka_t {
 
 	uint8_t quit;
 	uint8_t entered;
+	uint8_t edit_mode;
 	float rescale;
 	float drag_sensitivity;
-
 
 	/* implementation details */
 	void* pugl;
