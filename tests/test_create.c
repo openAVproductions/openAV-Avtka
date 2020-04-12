@@ -22,7 +22,7 @@ int main()
 	opts.w = 360;
 	opts.h = 240;
 	a = avtka_create("test", &opts);
-	CHECK_EQUALS(!a, 0);
+	CHECK_EQUALS(a > 0, 0);
 
 	avtka_iterate(a);
 
