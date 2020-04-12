@@ -459,6 +459,9 @@ avtka_destroy(struct avtka_t *a)
 	for(int i = 0; i < a->cols_used * 4; i++)
 		cairo_pattern_destroy(a->cols[i]);
 
+	for(int i = 0; i < a->screen_count; i++)
+		cairo_surface_destroy(a->screen_surfaces[i]);
+
 	free(a);
 	return 0;
 }
