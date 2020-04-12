@@ -18,13 +18,13 @@ avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 	if(o->flags_px_bit_1) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_A1,
 						 o->px_x, o->px_y);
-	} if(o->flags_px_rgb_16_565) {
+	} else if(o->flags_px_rgb_16_565) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_RGB16_565,
 						 o->px_x, o->px_y);
-	} if(o->flags_px_argb_32) {
+	} else if(o->flags_px_argb_32) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
 						 o->px_x, o->px_y);
-	} if(o->flags_px_rgb_24) {
+	} else if(o->flags_px_rgb_24) {
 		img = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
 						 o->px_x, o->px_y);
 	} else {
