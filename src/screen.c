@@ -29,6 +29,7 @@ avtka_screen_create(struct avtka_t *a, struct avtka_screen_opts_t *o)
 						 o->px_x, o->px_y);
 	} else {
 		AVTKA_WARN(a, "Failed: no pixel format set. flags_px_* all %d\n", 0);
+		return -1;
 	}
 
 	/* fill with black for starting */
