@@ -311,7 +311,7 @@ avtka_init_pugl(struct avtka_t *ui, const char *window_name)
 
 	puglInitWindowSize  (view, opts->w, opts->h);
 	puglInitResizable   (view, opts->resizeable);
-	puglInitContextType (view, PUGL_CAIRO | PUGL_GL);
+	puglInitContextType (view, PUGL_CAIRO);
 	puglIgnoreKeyRepeat (view, true );
 	puglSetEventFunc    (view, on_event);
 	puglCreateWindow    (view, window_name);

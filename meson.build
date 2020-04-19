@@ -9,7 +9,7 @@ add_project_arguments('-std=c++11', language : 'cpp')
 cc  = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 
-dep_names = ['cairo', 'x11', 'GL']
+dep_names = ['cairo', 'x11']
 deps = []
 
 foreach dep : dep_names
@@ -36,7 +36,6 @@ endif
 avtka = static_library('avtka',
     [avtka_src],
     c_args: ['-DPUGL_HAVE_CAIRO',
-             '-DPUGL_HAVE_GL',
              '-Isrc/pugl/'],
     install : install,
     include_directories: avtka_includes,
